@@ -36,18 +36,81 @@
     -   ID选择器：1.以`# `开头；2.使用时，使用标签属性添加` ID="IDName" `的属性；
 -   类选择器同ID选择器的区别：
     -   相同点：都可以用于任意元素；
-    -   不同点：不同标签的ID一般不能相同，所以这限制了ID的选择器的使用（只能用一次）；一般CSS很少用ID选择器，都是用class，ID选择器留给js使用；
--   包含选择器（子选择器）：`.ClassName TabName , .ClassName>TabName `：采用`ClassName `类的元素的子标签采用指定样式；
-    -   区别：`> `作用于元素的第一代后代；空格作用于所有后代；
--   通用选择器：` * `,作用于所有标签元素；
+    -   不同点：不同标签的ID一般不能相同，所以这限制了ID的选择器的使用（只能用一次）；一般CSS很少用ID选择器，都是用`class `，ID选择器留给`js `使用；
+-   包含选择器（子选择器）：`.ClassName TabName 和 .ClassName>TabName `：采用`ClassName `类的元素的子标签(`TabName `)采用指定样式；
+    -   两者区别：带`> `号的只作用于元素的第一代后代；空格作用于所有后代；
+-   通用选择器：选择器为` * `，表示 作用于所有标签元素；
 -   伪类选择器：主要用于`a:hover{color:red;} `链接标签的鼠标滑过样式；
--   分组选择：`, `当多个元素共同使用一个样式时，可用逗号分开多个元素；
+-   分组选择：`, `当多个元素共同使用一个样式时，可用逗号分开多个元素；例如：`h1,span{color:red;} `,表示`h1 ,span`采用相同的样式；
+-   选择器的权值：**标签的权值为1，类选择符的权值为10，ID选择符的权值最高为100**；
+-   当权值相同时，**内联样式表（标签内部）> 嵌入样式表（当前文件中）> 外部样式表（外部文件中）**。
+-   最高权值：例如：`p{color: red !important;} `
 
 ## 3.格式化排版
 
+-   字体：`font-family:"宋体";`
+-   字号：`font-size:12px;`
+-   粗体：`font-weight:bold;`
+-   斜体：`font-style:italic;`
+-   下划线：`text-decoration:underline;`
+-   删除线：`text-decoration:line-through;`
+-   段落缩进：`text-indent:2em;`
+-   行高：`line-height:2em;`
+-   字母间距：`letter-spacing:50px;`
+-   单词间距：`word-spacing:50px;`
+-   对齐：`text-align:center;`
+-   字体：`font-family:"宋体";`
+
 ## 4.盒模型
+
+>   html中的元素标签大体分为三类：块状元素、内联元素（行内元素）、内联块状元素；
+
+-   **常用的块状元素有：**`<div>、<p>、<h1>...<h6>、<ol>、<ul>、<dl>、<table>、<address>、<blockquote> 、<form>` 
+-   **常用的内联元素有：**`<a>、<span>、<br>、<i>、<em>、<strong>、<label>、<q>、<var>、<cite>、<code>`
+-   **常用的内联块状元素有：**`<img>、<input> `
+
+### 1.特点比较
+
+-   **块级元素特点：**
+    -   1、前后有换行，
+    -   2、可以设置宽、高，边距等属性，
+    -   3、内部可以包含其他块级元素，内联元素等；
+    -   4、宽度默认是父级元素的宽度；高度可以设置，或者由内容高度决定；
+-   **内联元素特点：**
+    -   1、前后不换行；
+    -   2、设置元素宽高无效，高度由`line-height `决定（不设置时由`font-size `计算得出），宽度由内容的多少决定，当宽度大于父元素的宽度时，内联元素会被折断到下一行；
+    -   3、不能包含其他元素；
+    -   4、但是内联元素中有一些是替换元素（浏览器在加载时根据属性的设置最后确定样子），可以设置宽高等属性，例如：`img，input`
+-   **内联块状元素**：
+    -   1、和其他元素都在一行上；
+    -   2、元素的高度、宽度、行高以及顶和底边距都可设置。
+
+### 2.盒模型
+
+![盒模型](https://upload-images.jianshu.io/upload_images/4792860-4c293beaf206f605.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/557)
+
+-   一个盒子包括了content（实际内容）、border（边框）、padding（内边距）和margin（外边距）；
+-   border边框：可设置`border-width, border-style, border-color `,注意，边框宽度指边框线宽度；还可单独设置某一方向的边框：`border-top:1px solid red;border-right:1px solid red; border-left:1px solid red;`
+-   盒模型宽度，高度：css内定义的宽（width）和高（height），指的是填充内容的宽度；而盒模型的实际宽度为：` width + padding-right + padding-left + border-width（左） + border-width(右) + margin-left + margin-right`；
+-   Padding：遵循上，左，下，右的顺序，也可分开定义`padding-top:20px;   padding-right:10px;   padding-bottom:15px;   padding-left:30px;`
+-   Margin：遵循上，左，下，右的顺序，也可分开定义`margin-top:20px;   margin-right:10px;   margin-bottom:15px;   margin-left:30px;`
 
 ## 5.布局模型
 
-## 6、其他技巧
+>   CSS包含三中布局模型，流动Flow，浮动Float，层模型layer
 
+
+
+## 6.单位
+
+### 1.颜色值
+
+-   英文名：如` red`；
+-   RGB颜色：`rgb(133,45,200)`
+-   十六进制颜色：其实就是RGB每一项的值由0-255变为十六进制的`0~ff `
+
+### 2.长度值
+
+-   px像素：
+-   em：就是本元素给定字体的 font-size 值，如果元素的 font-size 为 14px ，那么 1em = 14px；如果 font-size 为 18px，那么 1em = 18px；
+-   百分比：父级元素长度的百分比；
