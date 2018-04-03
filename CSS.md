@@ -92,14 +92,48 @@
 -   一个盒子包括了content（实际内容）、border（边框）、padding（内边距）和margin（外边距）；
 -   border边框：可设置`border-width, border-style, border-color `,注意，边框宽度指边框线宽度；还可单独设置某一方向的边框：`border-top:1px solid red;border-right:1px solid red; border-left:1px solid red;`
 -   盒模型宽度，高度：css内定义的宽（width）和高（height），指的是填充内容的宽度；而盒模型的实际宽度为：` width + padding-right + padding-left + border-width（左） + border-width(右) + margin-left + margin-right`；
--   Padding：遵循上，左，下，右的顺序，也可分开定义`padding-top:20px;   padding-right:10px;   padding-bottom:15px;   padding-left:30px;`
--   Margin：遵循上，左，下，右的顺序，也可分开定义`margin-top:20px;   margin-right:10px;   margin-bottom:15px;   margin-left:30px;`
+-   Padding：遵循上，右，下，左的顺序，也可分开定义`padding-top:20px;   padding-right:10px;   padding-bottom:15px;   padding-left:30px;`
+-   Margin：遵循上，右，下，左的顺序，也可分开定义`margin-top:20px;   margin-right:10px;   margin-bottom:15px;   margin-left:30px;`
 
 ## 5.布局模型
 
->   CSS包含三中布局模型，流动Flow，浮动Float，层模型layer
+>   CSS布局模型：流动，浮动，层模型；
+>
+>   层模型：绝对定位，相对定位，固定定位；
+
+### 3.position属性
+
+- 可以有四种不同的值：`static, relative, absolute, fixed `
+
+  - `relative`：相对定位； 相对于上一个位置，不会造成父级元素塌陷；
+
+  - `absolute` ：绝对定位；绝对定位的参考物是其包含块。即相对于其包含块进行定位。也可以说：绝对定位的盒子是相对于离它最近的一个已定位的盒子进行定位的。
+
+    > 包含块：某个元素的尺寸和位置往往是由该元素所在的包含块决定的，可以简单理解为定位参考框，或者坐标系；
+    >
+    > 浏览器选择根元素作为初始包含块；
+    >
+    > 1.对于`position: relative/staitc`的非根元素：包含块为最近的块容器祖先盒的`content `边；
+    >
+    > 2.对于` position: fixed`：包含块由连续媒体的视口或者分页媒体的页区建立；
+    >
+    > 3.对于`position: absolute` ：包含块由最近的`position `为` absolute `，`relative `或者` fixed `的祖先建立
+
+  - `fixed`： 元素相对于浏览器窗口定位；注意包含块；
+
+  - `relative` 
 
 
+
+### 浮动
+
+> 浮动元素脱离文档流，不占据空间，浮动元素碰到==包含它的边框==或者==浮动元素的边框==则停留。容纳不下时向下换行；
+>
+> 注意：元素浮动是从元素初始位置开始浮动。可以向左，向右，或不浮动，
+
+- 浮动元素可能导致的问题：
+  - 父元素的高度无法被撑开，影响同父级元素同级别的元素；
+- 浮动特性：包裹和破坏；
 
 ## 6.单位
 
@@ -114,3 +148,17 @@
 -   px像素：
 -   em：就是本元素给定字体的 font-size 值，如果元素的 font-size 为 14px ，那么 1em = 14px；如果 font-size 为 18px，那么 1em = 18px；
 -   百分比：父级元素长度的百分比；
+
+## 7.常用属性总结
+
+### 1.文本
+
+- `text-decoration: none/ underline/ overline/ blink/ inherit ` ：装饰文本；
+- ​
+
+### 2.链接
+
+- `a:link` ：未访问的链接样式；
+- `a:visited` ：已被访问的链接样式；
+- `a:hover` ：鼠标指针移动到链接上；
+- `a:active`： 正在被点击的链接；
