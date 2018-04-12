@@ -1,3 +1,10 @@
+## 标准对象
+
+### 1.JSON
+
+- 序列化：将对象转为JSON字符串`JSON.stringify(xxxx)` ；
+- 反序列化：将JSON字符串转为JavaScript对象 `JSON.parse(xxx)` ；
+
 ## BOM
 
 > BOM 的核心对象是`window `,它表示浏览器的一个实例；它既是通过 JavaScript 访问浏览器窗口的一个接口，又是 ECMAScript 规定的 Global 对象。
@@ -80,7 +87,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 - `nodeValue` ：
   - 对于文本节点`nodeValue`是文本信息；
   - 对于属性节点`nodeValue`是属性值；
-  - 对于元素节点`nodeValue`是null；
+  - 对于元素节点`nodeValue`始终是null；
 - 节点关系：
   - `childNodes`属性，保存着NodeList对象，NodeList用于保存一组有序节点；可以向数组一样访问其中元素，基于DOM结构动态执行查询结果。
   - `parentNode`属性，指向其父节点；
