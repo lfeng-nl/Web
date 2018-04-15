@@ -156,9 +156,15 @@
 - `text-decoration: none/ underline/ overline/ blink/ inherit ` ：装饰文本；
 - ​
 
-### 2.链接
+### 2.伪类
 
-- `a:link` ：未访问的链接样式；
-- `a:visited` ：已被访问的链接样式；
-- `a:hover` ：鼠标指针移动到链接上；
-- `a:active`： 正在被点击的链接；
+> 用于向某些选择器添加特殊效果；
+>
+> 语法：selector :pseudo-class{ ... }
+
+- `:link` ：未访问的链接样式；
+- `:visited` ：已被访问的链接样式；
+- `:hover` ：鼠标指针移动到目标上；
+- `:active`： 正在被点击的链接；
+- `:focus`：向拥有键盘输入焦点的元素添加样式；
+- ​
