@@ -1,3 +1,20 @@
+## 1.基础概念
+
+- JavaScript 和 ECMAScript：
+  - 完整的JavaScript 实现应由：ECMAScript、DOM、BOM 三部分组成；
+  - ECMAScript  ：实现标准规定的各个方面内容的语言的描述（语法，类型，语句...）；
+  - DOM ：文档对象模型，针对 XML 但经过扩展用于 HTML 的应用程序接口；
+  - BOM ：浏览器对象模型，访问和操作浏览器窗口；
+
+### 1.数据类型
+
+- Undefined 类型：只有一个值，`undefined`，表示变量使用var声明但未对其加以初始化；
+- Null 类型：只有一个值，`null`，表示一个空对象指针；
+- Boolean 类型：
+- Number 类型：
+- String 类型：
+- Object 类型：
+
 ## 标准对象
 
 ### 1.JSON
