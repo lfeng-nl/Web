@@ -95,6 +95,18 @@
 -   Padding：遵循上，右，下，左的顺序，也可分开定义`padding-top:20px;   padding-right:10px;   padding-bottom:15px;   padding-left:30px;`
 -   Margin：遵循上，右，下，左的顺序，也可分开定义`margin-top:20px;   margin-right:10px;   margin-bottom:15px;   margin-left:30px;`
 
+### 3.margin 深入
+
+- margin重叠存在于三种情况：
+  - 1.相邻的兄弟元素：上面元素的`margin-top`和下面元素的`margin-bottom`；
+  - 2.父级和第一个/最后一个子元素：（具有相应条件才会发生重叠；
+    - 父级元素`margin-top`重叠情况：
+    - 父级元素`margin-bottom`重叠情况：
+  - 3.空的block元素；
+    - 空元素的上下margin值会发生重叠；
+- 善用margin重叠，可以增加程序的健壮性；
+- ​
+
 ## 5.布局模型
 
 >   CSS布局模型：流动，浮动，层模型；

@@ -8,12 +8,62 @@
 
 ### 1.数据类型
 
-- Undefined 类型：只有一个值，`undefined`，表示变量使用var声明但未对其加以初始化；
+> ECMAScript共有5种简单数据类型和一种复杂数据类型，
+
+- Undefined 类型：只有一个值，`undefined`，表示变量使用`var`声明但未对其加以初始化；
 - Null 类型：只有一个值，`null`，表示一个空对象指针；
-- Boolean 类型：
+- Boolean 类型：只有两个字面量，`true、false`；
 - Number 类型：
 - String 类型：
-- Object 类型：
+- Object 类型：对象类型，由键值组成的无序集合，
+  - 创建：`var o = new Object() 或 var o = {}`；
+  - ​
+
+### 2.引用类型
+
+> 在js中，**引用类型**是一种数据结构，用于将数据和功能组织在一起；类似于通常所说的类，但并不是相同的概念，对象为引用类型的实例。引用类型也称为 **对象定义**
+
+- Object类型：使用较多的引用类型，主要用于存储数据（类似python字典）
+
+  - 创建及使用：
+
+    ```javascript
+    /* 第一种创建方式 */
+    var person = {
+        name = 'xxx';
+        age = 20;
+    }
+
+    /* 第二种创建方式 */
+    var person = new Object();
+    person.name = 'xxx';
+    person.age = 20;
+
+    console.log(person.name);               // 可以使用 点 取得属性值
+    console.log(person['name']);            // 方括号取值，优点是可以通过变量取值
+    ```
+
+- `Array`类型：
+
+- `Date`类型：
+
+- `RegExp`类型：
+
+- `Function`类型：
+
+- 基本包装类型：`String, Boolean, Number`:
+
+- 其他：
+
+  - Global对象：不属于任何其他对象的属性和方法，最终都是Global对象的属性和方法；终极兜底对象；
+  - 所有全局作用域中声明的变量、函数都会映射为` window`对象的属性和方法；
+  - Math对象：
+
+### 3.面向对象
+
+> 类：在其他面向对象语言中，类是一个可以创建任意多个具有相同属性和方法的一种特殊类型。
+>
+> JS中没有类的概念，对象定义为：无序组合，其属性可以包含基本值，对象或者函数；
 
 ## 标准对象
 
