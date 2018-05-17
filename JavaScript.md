@@ -26,23 +26,31 @@
     - 1.与任何值都不相等，包括自身；
     - 2.与任何数的计算都为NaN；
     - 3.可通过`isNaN( )`判断是否为“数值”，能否“不是数值”，注意！！！如果能转为数值，则为false；
-  - 
 - String 类型：
 - `typeof `和`instanceof,  (是否为某种类型的实例)`
+  - `typeof a`：变量a的类型；
+  - `a instanceof Number`：a是否为`Number`类型；
 
 ### 2.符号
 
 > JavaScript符号基本同C相同；
->
-> 不同点：1.`>>`有符号右移（可简单认为，符号位保留，然后移动）；`>>>` 无符号右移；（符号位参与移动，原位置补0）（总得到正数）；2.`===`全等和`==`相等：例如`'55'==55`会返回true，`'55'===55`会返回false；相等如果类型不同会按照相应规则做类型转换，而全等不做类型转换；3.`!==`不全等和`!=`不相等：
+
+- 不同点：
+  - 1.`>>`有符号右移（可简单认为，符号位保留，然后移动）；`>>>` 无符号右移；（符号位参与移动，原位置补0）（总得到正数）；
+  - 2.`===`全等和`==`相等：例如`'55'==55`会返回true，`'55'===55`会返回false；相等如果类型不同会按照相应规则做类型转换，而全等不做类型转换；3.`!==`不全等和`!=`不相等：
 
 - 条件操作符号：`variable = booolean_expression ? true_value : false_value;`
 
 ### 3.语句
 
-> 大部分同c相同：if...else..., while, for, break, continue, switch()...case:
+> 大部分同c相同：if...else..., while(), for(), break, continue, switch()...case:
 
 - `for-in`语句：`for(x in l){ .....; }
+  - 用于枚举对象的==属性== ；
+  - 旧版本`for-in`用于值为`null, undefined`的对象会抛出异常(ES5之后的版本不会）；
+- `for-of`语句：`for( x of l){ ... ; }
+  - 用于遍历数组，取出值；
+  - ES6 引入的特性，不能作用于普通对象；
 - `label`语句：可以在代码中添加标签；`start: ...;`
 - `with`语句：向代码的作用域设置到一个特定的对象中：`with (expression) statement;`(不建议使用)；
 
@@ -187,23 +195,21 @@
 
 - 私有变量：
 
-## 标准对象
-
-### 1.JSON
-
-- 序列化：将对象转为JSON字符串`JSON.stringify(xxxx)` ；
-- 反序列化：将JSON字符串转为JavaScript对象 `JSON.parse(xxx)` ；
-
-## BOM
+## 4.BOM
 
 > BOM 的核心对象是`window `,它表示浏览器的一个实例；它既是通过 JavaScript 访问浏览器窗口的一个接口，又是 ECMAScript 规定的 Global 对象。
+>
+> 重要点：location.href 跳转，间歇调用和超时调用；
 
 - 所有全局作用域中声明的变量、函数都会映射为` window`对象的属性和方法；
-- 如果页面中包含框架（html的`frame`标签），则每个框架都拥有自己的window对象，并且保存在`frames `集合中，
+- 如果页面中包含框架（html的`frame`标签），则每个框架都拥有自己的window对象，并且保存在`frames `集合中;
+- `top`对象始终指向最高（最外层）的框架（top 等于最外层框架的window)，也就是浏览器窗口；可以用`top.frames[0]`指向其他frame；
 
 ### 1.location对象
 
 > 提供当前窗口中加载的文档有关的信息；既是window对象的属性，也是document对象的属性；访问时可以用`window.location`也可以用`location`；
+>
+> 比较重要的就是通过`location.href `进行跳转、超时调用
 
 - 对象属性：
 
@@ -215,16 +221,14 @@
 - 对象方法：
 
   - `reload()`：重新加载当前文档；
-
-  - `assign()`：打开新的url并在浏览器历史记录中生成一条记录；同设置`location.href`属性效果相同（常用）；
-
+  - `assign()`：打开新的url并在浏览器历史记录中生成一条记录；；
+    - 同设置`location.href`属性（常用）或设置`winddow.location`效果相同
   - `replace()`：导航到相应的url，但不会在历史记录中生成；
 
-    ​
 
-### 2.navigatior对象
+### 2.navigatior对象(导航)
 
-> 提供浏览器及相关环境信息
+> 用于识别客户端浏览器，
 
 - `userAgent()`：浏览器用户代理字符串，声明了浏览器用于HTTP情求的用户代理头的值；可用于判断移动端还是PC端，浏览器类别；
 - `systemLanguage()`：返回OS使用的默认语言；
@@ -253,7 +257,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 - ` confirm()`：确认对话框，将用户选择信息返回；
 - `prompt()`：提示框，提示用户输入一些文本；
 
-## DOM
+## 5.DOM
 
 > 文档对象模型，是针对HTML和XML文档的一个API。DOM描绘了一个层次的节点树，允许开发人员添加，移除和修改页面的某一部分。
 >
@@ -317,3 +321,10 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 - 重要方法
   - `getAttribute('xx')`：获取指定属性的值；
   - `setAttribute('xxx', 'xxx')`：设置指定属性指定值；
+
+## 标准对象
+
+### 1.JSON
+
+- 序列化：将对象转为JSON字符串`JSON.stringify(xxxx)` ；
+- 反序列化：将JSON字符串转为JavaScript对象 `JSON.parse(xxx)` ；

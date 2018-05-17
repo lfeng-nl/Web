@@ -97,15 +97,32 @@
 
 ### 3.margin 深入
 
-- margin重叠存在于三种情况：
-  - 1.相邻的兄弟元素：上面元素的`margin-top`和下面元素的`margin-bottom`；
-  - 2.父级和第一个/最后一个子元素：（具有相应条件才会发生重叠；
+####i.margin重叠
+
+- margin重叠的特性：1.block水平的元素(不包括float和absolute元素)；2.不考虑writing-mode，只发生在垂直方向（margin-top/margin-bottom)；
+- 存在于三种情况：
+  - 1.相邻的兄弟元素：下面元素的`margin-top`和上面元素的`margin-bottom`会发生重叠，取大值；
+  - 2.父级和 第一个或最后一个 子元素；
     - 父级元素`margin-top`重叠情况：
     - 父级元素`margin-bottom`重叠情况：
   - 3.空的block元素；
     - 空元素的上下margin值会发生重叠；
+- 兄弟元素重叠：
+  - 浮动后不会发生重叠；
+- 父子重叠margin-top重叠条件：
+  - 1.父元素非块状格式化上下文元素；
+  - 2.父元素没有border-top设置；
+  - 3.父元素没有padding-top设置；
+  - 4.父元素和第一个子元素之间没有lnline元素分隔；
+- 父子重叠margin-botton重叠条件：
+  - 1.父元素非块状格式化上下文元素；
+  - 2.父元素没有border-bottom设置；
+  - 3.父元素没有padding-bottom设置；
+  - 4.父元素和最后一个子元素之间没有lnline元素分隔；
+  - 5.父元素没有height，min-height, max-height限制；
+
+- 取值：正正取大值，正负值相加，负负最负值；
 - 善用margin重叠，可以增加程序的健壮性；
-- ​
 
 ## 5.布局模型
 
@@ -178,5 +195,4 @@
 - `:visited` ：已被访问的链接样式；
 - `:hover` ：鼠标指针移动到目标上；
 - `:active`： 正在被点击的链接；
-- `:focus`：向拥有键盘输入焦点的元素添加样式；
-- ​
+- `:focus`：向拥有键盘输入焦点的元素添加样式；​
