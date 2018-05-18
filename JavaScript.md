@@ -261,11 +261,13 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 
 > 文档对象模型，是针对HTML和XML文档的一个API。DOM描绘了一个层次的节点树，允许开发人员添加，移除和修改页面的某一部分。
 >
-> document 对象是HTMLDocument的一个实例，表示整个HTML页面；
+> ==document== 对象是HTMLDocument的一个实例，表示整个HTML页面；
 
 ###1.节点层次：
 
-- 所有标记页面表现为一个特定节点为根节点的树形结构（HTML，根节点为Document，而非html 元素标签）；
+- 所有标记页面表现为一个特定节点为根节点的树形结构；HTML，根节点为`Document`，而非html 元素标签；html标签为文档元素；
+- ==元素节点向下包括：属性节点、文本节点、其他元素节点.==..
+- 所有的节点类型，JS中以`Node`类型实现；每个节点由`nodeType`定义其属性；
 - `nodeType`：
   - 元素标签类型（1）
   - 属性类型（2）
@@ -282,21 +284,32 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
   - 对于属性节点`nodeValue`是属性值；
   - 对于元素节点`nodeValue`始终是null；
 - 节点关系：
-  - `childNodes`属性，保存着NodeList对象，NodeList用于保存一组有序节点；可以向数组一样访问其中元素，基于DOM结构动态执行查询结果。
+  - `childNodes`属性，保存着NodeList对象，NodeList用于保存一组有序节点；可以向数组一样访问其中元素，基于DOM结构动态执行查询结果。还有`firstChild、lastChild`指向第一个、最后一个子节点；
   - `parentNode`属性，指向其父节点；
-  - `previousSibling`属性，指向前一个同胞节点；
-  - `nextSibling`属性，指向后一个同胞节点；
-- 增加或删除节点
-  - `document.createElement('div')`：创建一个元素节点，参数为元素的节点名;
-  - `document.createTextNode('xxx') `：创建文本节点，参数为需要插入节点中的文本；
-  - `somenode.appendChild(newNode)`：用于向`somenode 的 childNodes`列表后添加一个节点；
-  - `somenode.cloneNode()`：创建调用这个方法的节点的一个与`somenode `完全相同的副本;
-- document
+  - `previousSibling`属性，指向前一个兄弟节点；
+  - `nextSibling`属性，指向后一个兄弟节点；
+- 通过关系操作节点：
+  - `appendChild()`，向子节点末尾插入一个节点；
+  - `insertBefore()`，向指定节点前插入一个节点；与之成为兄弟节点；
+  - `replaceChild()`，替换子节点；
+
+### 2.document 节点
+
+> `document` 对象是`HTMLDocument` 的一个实例，表示整个HTML页面；`document`对象是`window`对象的一个属性；
+
+- 提供文档信息
   - `document.body`属性：指向`<body>`元素节点；
   - `document.doctype`属性：指向`<!DOCTYPE>`标签；
   - `document.title`属性：该页面标题；
   - `document.URL`属性：该页面完整的URL，例如`http://www.wrox.com/WileyCDA/`；
   - `document.body`属性：改页面的域名，例如`www.wrox.com`；
+- 节点创建删除
+  - `document.createElement('div')`：创建一个元素节点，参数为元素的节点名;
+  - `document.createTextNode('xxx') `：创建文本节点，参数为需要插入节点中的文本；
+- 节点的查找
+  - `document.getElementById()`：通过id查找节点；
+  - `document.getElementsByTagName()`：通过标签名查找节点，返回一个nodeList；
+  - `document.getElementsByName()`：通过name查找节点，一般用于选定一组节点；
 
 > tips:对于`http://mail.163.com/index.html`
 >
@@ -308,19 +321,24 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 >
 > http://mail.163.com/index.html：url，统一资源定位符；
 
-###2.Element元素标签类型
+###3.Element 类型 节点
 
-- 查找
-  - `document.getElementById()`：通过id查找节点；
-  - `document.getElementsByTagName()`：通过标签名查找节点，返回一个nodeList；
-  - `document.getElementsByName()`：通过name查找节点，一般用于选定一组节点；
 - 重要属性
-  - `id`：元素的id值；
-  - `className`：元素的类名；
-  - `attributes`：Attr节点的动态集合；
+  - `id`：获取或设置元素的id值；
+  - `className`：获取或设置元素的类名；
+  - `innerText`：内部文本信息，（注意，可能是子节点的文本信息）；
+  - `innerHTML`：内部HTML信息；
+  - `attributes`：属性节点的动态集合；
 - 重要方法
   - `getAttribute('xx')`：获取指定属性的值；
   - `setAttribute('xxx', 'xxx')`：设置指定属性指定值；
+  - `removeAttribute('xxx')`：删除指定属性；
+
+### 4.Text 节点
+
+### 5.Attr节点
+
+- 不太会直接访问属性节点，都是通过`getAttribute(), setAttribute, removerAttribute`等方法操作；
 
 ## 标准对象
 
