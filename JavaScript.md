@@ -507,3 +507,14 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 
 - 序列化：将`JavaScript`对象转为`JSON`字符串：`JSON.stringify(xxxx)` ；
 - 反序列化：将`JSON`字符串转为`JavaScript`对象： `JSON.parse(xxx)` ；
+
+### 2.localStroage，sessionStorage
+
+> HTML5中，新加入了一个localStorage特性，主要用来作为本地存储，解决了cookie存储空间（每条cookie 4K）不足的问题，一般浏览器支持5M大小的空间；
+>
+> localStorage与sessionStorage的唯一一点区别就是localStorage属于永久性存储，而sessionStorage属于当会话结束的时候，sessionStorage中的键值对会被清空 
+
+- `localStorage.getItem()`：读取值；
+- `localStorage.setItem()`：存储值；
+- `localStorage.clear()`：清除所有；
+- `localStorage.removeItem()`：清除指定；
