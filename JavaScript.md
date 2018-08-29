@@ -501,6 +501,8 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 
     `load`：当页面完全加载后会触发；
 
+## 附录
+
 ## 标准对象
 
 ### 1.JSON
@@ -518,3 +520,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 - `localStorage.setItem()`：存储值；
 - `localStorage.clear()`：清除所有；
 - `localStorage.removeItem()`：清除指定；
+
+## 日常开发
+
+- 调试JS时无法找到动态加载的JS源文件：在文件开头或结尾加上`//@ sourceURL=xxx.js`，就可以在no domain中找到需要调试的文件；
