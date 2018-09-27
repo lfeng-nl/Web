@@ -66,9 +66,66 @@
   - `type`: 脚本类型, JavaScript类型可以省略;
   - `src`: 指定外部脚本的url, 
 
-## 3.文字相关元素
+## 3.重点元素标签
 
 - `<a />`: 超链接
-- `<span></span>`: 本身无任何含义, 用于将全局属性应用到一段内容上; 
-- 
+  - `href`: a元素所指定元素的url, `href="#id"`锚点, 跳转到内部指定id上;
+  - `target`: 指定连接资源显示;
 
+- `<span></span>`: 本身无任何含义, 用于将全局属性应用到一段内容上; 
+
+- `<p></p>`: 段落,
+
+- `<div></div>`: 本身不具有任何意义; 
+
+- `<ul></ul>`: 无序列表;
+
+  - `<li></li>`: 列表中的项目;
+
+- `<section></section>`: h5, 表示文档中的一节;
+
+- `<header></header>`: 表示一节的首部, 可包含各种适合出现在首部的东西, 包括刊头或徽标;
+
+- `<footer></footer>`: 表示一节尾部.
+
+  ```html
+  <!-- 例子 -->
+  <body>
+      <header></header>
+      <session>
+          <header></header>
+          <session></session>
+      </session>
+      <footer></footer>
+  </body>
+  ```
+
+
+### 文字相关元素
+
+- `<b></b>`: 标记一段文字, 但并不代表特别强调或重要性; 
+- `<i></i>`: 表示这段文字与周围内容有本质区别;
+- `<s></s>`: 表示一段文字不准确或校正;
+- `<sub></sub>, <sup></sup>`: 下标或上标;
+- `<wbr>`: 建议换行;
+
+## 4.表单标签
+
+- `<form></form>`: 表单
+  - `action="/test/tset"`: 应该将数据发送到的地方;
+  - `method="post"`: 表单提交方式;
+  - `name`: 可用于css选择, 不发送到浏览器;
+- `<input></input>`: 
+  - `autofocus`: 自动聚焦, 表单显示的时候就聚焦于某个input元素; 
+  - `disabled`: 禁用;
+  - `type`: 类型, 
+- `button`: 按钮
+  - `type`: submit, 提交表单(默认); reset, 重置表单; button, 仅为一个按钮, 
+  - `form`: h5, 通过form与任意表单挂钩;
+
+- `<label></label>`: 
+
+## 5.嵌入内容
+
+- `<img />`: 嵌入图像
+  - `src`: 指定欲嵌入图像的URL, 
