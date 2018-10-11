@@ -508,7 +508,38 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 - `let a=[1,2,3]; foo(...a)`: 会将迭代器展开, 元素作为参数传递到函数中;
 - `(...a)=>{console.log(a)}`: 将传入的操作合并为一个可迭代对象;
 
-### 6.其他
+### 6.Module
+
+> 模块功能主要由两个命令构成: export和import, export用于规定模块的对外接口; import用于输入其他模块提供的功能;
+
+- `export `: 输出变量
+
+  - ```javascript
+    // 方式1
+    export var firstName = 'liu'
+    
+    // 方式2
+    var firstName = 'liu'
+    export {firstName}
+    
+    ```
+
+- `import`: 加载模块
+
+  - ```javascript
+    import {firstName} from "./profile.js"
+    ```
+
+  - 通过import命令出入的变量都是只读;
+
+  - `import`命令会被JavaScript引擎静态分析, 先于模块内的其他语句执行;
+
+- `export default`: 为模块指定默认输出; 其他模块加载该模块时, `import`命令可以指定任意名称, 且也不需要大括号;
+
+  - 一个模块只能用一个默认输出;
+  - `export default`就是输出一个叫做`default`的变量或方法, 等同于`export {xx as default}`
+
+- 
 
 ### 8.console
 
