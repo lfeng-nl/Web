@@ -8,6 +8,7 @@ var vm = new Vue({
     data: {
         name: 'xxx'
     },
+    // 声明周期钩子, create
     create: function () {
         console.log('xxx');
     }
@@ -69,22 +70,107 @@ var vm = new Vue({
   }
   ```
 
-### 4.Class 和 Style绑定
+## 2.[选项/数据](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E6%95%B0%E6%8D%AE)
 
-- `<span v-bind:class="{active: isActive}" class="nomal"> xxx </span>` : active类是否存在决定于`isActive`的bool值;
-- 绑定多个类: `<span v-bind:class="[data1, data2, data3]"> xxx </span>`
+> ==: 如果在数据对象中使用箭头函数, this的指向将不会按照期望指向Vue实例==
 
-### 5.v-if 和 v-show
+### 1.data
+
+### 2.computed
+
+> 计算属性, 数据值由计算得到, 注意:==如果计算属性使用箭头函数, 则`this`不会指向这个组件的实例,不过可以通过将例作为函数的第一个参数来访问; `aDouble: vm=>vm.a*2`==
+
+### 3.methods
+
+- 放置事件处理的相关函数;
+
+### 4.watch
+
+> 通过键值对的形式,监控某个数据, 当数据变化时, 调用对应的方法.
+
+## 3.[选项/DOM](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-DOM)
+
+### 1.el
+
+- 提供一个在页面上已存在的DOM元素作为Vue实例的挂载目标.
+- 
+
+## 5.[指令](https://cn.vuejs.org/v2/api/#%E6%8C%87%E4%BB%A4)
+
+### 1.v-bing,简写为`:`
+
+> 绑定属性, class, style, 等
+
+#### 1.绑定class
+
+- 对象语法: `<div v-bind: class="{active: isActive}"></div>`, 由`isActive`决定`active`是否存在;
+  - 也可以将整个`{xx}`对象作为一个参数, `<div v-bind: class="classObject"></div>`, 由决定具体类;
+- 数组语法: `<div v-bind:class="[activeClass,  errorClass]"></div>`: 对数组中值进行赋值;
+- 
+
+### 2.v-if 和 v-show
 
 > v-if 决定节点是否存在, v-show决定节点是否显示
 
-- `v-if: <span v-if="isExist"></span>`;
-- `v-if="type === 'A'" .... v-else`
-- `v-if ... v-else-if ... v-else ...`
+#### 1.v-if
 
-### 6.v-for
+- ==`v-if`==: `<span v-if="isExist"></span>`;
+- ==`v-else`==: `<span v-if="type === 'A'">A</span> <span v-else>B</span>`
+- ==`v-else-if`==: `<span v-if="type==='A'">A</span> <span v-else-if="type='B'">B</span> <span v-else>C</span>`
+
+#### 2.v-show
+
+- `<div v-show="ok">hello</div>`
+
+### 3.v-for
 
 - 列表的循环: `v-for="item in items"` 或者 `v-for="(item, index) in items"`
-
 - 对象的循环: `v-for="value in item"` 或者 `v-for="(value, key) in item"`
-- 
+- 可以为渲染出的dom增加唯一标识key: `<div v-for="item in items" :key="item.id">
+
+### 4.v-on, 简写为@
+
+## 组件
+
+### 1.组件注册
+
+- 全局注册: `Vue.component('my-component-name', {/*....*/})`: 可以用于任何新创建的Vue跟实例中.
+- 局部注册: `var ComponentA={/*....*/}; new Vue({components:{'component-a': ComponentA}})`: components中的每个属性名都是一个组件名称, `ComponentA`为一个js对象, 包含`template, data`等组件所需属性;
+- 在模块系统中: `import ComponentA form './ComponentA'`;
+- 基础组件的自动化全局注册: 
+
+### 2.Prop
+
+- Prop名如果采用驼峰命名, 在DOM中使用时需要采用短横线分割命名(HTML大小写不敏感)
+
+- 静态传递Prop时, 都默认为String类型, 如果需要传递数字, 布尔等需要绑定, `<blog-post :likes='42'</blog-post>`
+
+- 单向数据流: prop形成了父到子的单向绑定, 可以通过父更新子, 不能通过子更新父;
+
+- prop验证: 通过对象, 指定prop的类型, 
+
+  ```javascript
+  props:{
+      propA: Number, 
+      propB:{
+          type: Number, 
+          default(){}
+     	}, 
+      propC:{
+          validator(){}
+      }
+  }
+  ```
+
+### 3.自定义事件
+
+- 跟组件名和prop不同, 不会将驼峰命名转换为短横线分割命名, 并且由于HTML大小写不敏感, 所以`v-on:myEvent 转换为 v-on:myevent`导致事件不能被监听, 推荐使用 短横线命名;
+
+- 通过`this.$emit('my-event')`: 
+- `.sync`
+
+## 命名规则
+
+- 自定义组件名: 字母全小写且必须包含一个连字符; 当使用驼峰命名时例如(MyComponentNmae), 引用时可以引用`<my-component-name> 也可 <MyComponentName>`;
+- prop: 
+- 自定义事件名: 短横线命名, 
