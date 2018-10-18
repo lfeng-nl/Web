@@ -582,6 +582,22 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 - `console.table(data)`: 以表格形式输出;
 - `console.assert(isDebug, 'log')`: 断言, 根据isDebug进行输出;
 
+## 8.AJAX
+
+> 实现ajax:
+>
+> 1.js原生XHR接口;
+>
+> 2.JQuery, $.ajax()
+>
+> 3.Axios,
+>
+> 4.fetch.js
+
+### 1.原生XHR接口
+
+
+
 ## 标准对象
 
 ### 1.JSON
