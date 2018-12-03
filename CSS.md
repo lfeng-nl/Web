@@ -213,3 +213,9 @@
 - `:hover` ：鼠标指针移动到目标上；
 - `:active`： 正在被点击的链接；
 - `:focus`：向拥有键盘输入焦点的元素添加样式；​
+
+## 8.弹性盒子(CSS3)
+
+- 通过`display:fiex; 或 display:inline-flex`将元素设置为弹性容器;
+- 
+
