@@ -308,6 +308,21 @@
 
   > 关于new：例如上述例子中，如果`var p = new Product('name', price)` 则生成了一个具有name，price属性的对象，new做了关键性的几部：1.创建一个obj`var obj = {}`；2.将`__proto__` 指向 `Product.prototype`（原型对象）；3.调用`Product.call()`，传入`obj`;
 
+### 3.this剖析  [this原理](http://www.ruanyifeng.com/blog/2018/06/javascript-this.html)
+
+> this指向函数运行时所在的环境变量
+
+```javascript
+var obj = { foo: function() { console.log(this.bar) }, bar:1 }
+var bar = 2;
+var foo = obj.foo;
+
+foo()       // 2, this指向Window
+obj.foo()   // 1, this指向obj
+```
+
+
+
 ## 4.BOM
 
 > BOM 的核心对象是`window `,它表示浏览器的一个实例；它既是通过 JavaScript 访问浏览器窗口的一个接口，又是 ECMAScript 规定的 Global 对象。
@@ -490,17 +505,20 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 
 ### 1.局部变量和常量
 
+> var声明的变量无块级作用域, 具有变量提升特性(先使用,后声明, 解析器会自动将声明提到开始处)
+
 - `let`: 创建块级作用域变量;
   - 不存在变量提升, 必须先声明再使用;
   - 在相同作用域内,不允许重复声明;
 - `const`: 声明常量;
   -  `const`保证的是变量指向的那个内存地址不变, 而内存地址上的值则可能随着类型不同而不受控制, 需要注意;
+  -  `const`声明变量也具有块级作用域, 
 - 顶层对象
   - 浏览器环境是`window`对象, 在Node指`global`对象, 
 
 ### 2.解构赋值
 
-- 数组/Iterator接口的解构赋值
+- 数组/ `Iterator`接口的解构赋值
 
   ```javascript
   let [a, b, c] = [1,2,3] // a=1, b=2, c=3
@@ -512,6 +530,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 
   ```javascript
   let {a, b} = {a:'aaa', b:'bbb'} // 不同于数组, 对象解构只key有关, 与顺序无关
+  let { foo: baz } = { foo: 'aaa', bar: 'bbb' }; // 也可变量名(baz)与匹配模式(foo)不一致, baz = 'aaa'
   ```
 
 ### 3.函数
@@ -519,18 +538,29 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 #### 1.默认值
 
 - `function log(x, y="world"){...}`
+- 函数的`length`属性: 返回没有指定默认值的参数的个数;
 
 #### 2.箭头函数
 
-- `()=>{}`: 
+- `()=>{}`: `var f = v => v; 等同于 var f = function (v) { return v }`
 
 - 注意点:
 
-  1. 函数体内的`this`对象, 就是定义时所在的对象, 而不是使用时所在的对象;
-
-  2. 不可以当做构造函数, (不可以使用new命令, 否则抛出错误;
-
+  1. 函数体内的`this`对象, 就是==定义时所在的对象, 而不是使用时所在的对象==; *扩展: this剖析*
+  2. 不可以当做构造函数, (不可以使用new命令), 否则抛出错误;
   3. 不可以使用`arguments`对象, 不可以使用`yield`命令;
+
+#### 3.rest参数 (`...变量名`) 
+
+- 用于获取函数的多余参数,  变量作为一个数组, 将多余参数放入;
+
+  ```javascript
+  // values 为一个数组, 多余参数都放入其中
+  function add(...values) {
+      ...
+  }
+  ```
+
 
 
 ### 4`for...of VS for...in`
@@ -543,9 +573,11 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 - `let a=[1,2,3]; foo(...a)`: 会将迭代器展开, 元素作为参数传递到函数中;
 - `(...a)=>{console.log(a)}`: 将传入的操作合并为一个可迭代对象;
 
-### 6.Module
+### 6.Module语法
 
-> 模块功能主要由两个命令构成: export和import, export用于规定模块的对外接口; import用于输入其他模块提供的功能;
+> 模块功能主要由两个命令构成: `export`和`import`;
+>
+> `export`用于规定模块的对外接口; `import`用于输入其他模块提供的功能;
 
 - `export `: 输出变量
 
