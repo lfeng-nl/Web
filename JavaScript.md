@@ -579,35 +579,56 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 >
 > `export`用于规定模块的对外接口; `import`用于输入其他模块提供的功能;
 
-- `export `: 输出变量
+#### 1.`export `: 输出
 
-  - ```javascript
-    // 方式1
-    export var firstName = 'liu'
-    
-    // 方式2
-    var firstName = 'liu'
-    export {firstName}
-    
-    ```
+> 一个文件就是一个独立的模块, 如果希望该模块的变量在外部能够获取, 必须使用`export`关键字输出, `export`可以输出变量, 函数, 类等;
+>
+> `export`不能处于块级作用域内;
 
-- `import`: 加载模块
+- ```javascript
+  // 方式1
+  export var firstName = 'liu'
+  
+  // 方式2
+  var firstName = 'liu'
+  export {firstName}
+  
+  ```
 
-  - ```javascript
-    import {firstName} from "./profile.js"
-    ```
+#### 2.`import`: 加载模块
 
-  - 通过import命令出入的变量都是只读;
+> 通过`import`加载其他模块`export`的变量,函数, 类等;
+>
+> `import`的变量都是只读的, 不允许在加载模块的脚本里改写;
+>
+> `import`具有提升效果, 会提升到整个模块头部, 首先执行;
 
-  - `import`命令会被JavaScript引擎静态分析, 先于模块内的其他语句执行;
+- ```javascript
+  import {firstName [as xxx]} from "./profile.js" // 通过as关键字对导入变量进行重命名
+  ```
 
-- `export default`: 为模块指定默认输出; 其他模块加载该模块时, `import`命令可以指定任意名称, 且也不需要大括号;
+- `import * as xxx from './xxx.js'`: 整体加载, 名称为`xxx`, 通过`.`访问具体变量;
 
+- ==`export default`: 为模块指定默认输出== ; 
+  - 其他模块加载该模块时, `import`命令可以指定任意名称, 且也不需要大括号;
   - 一个模块只能用一个默认输出;
   - `export default`就是输出一个叫做`default`的变量或方法, 等同于`export {xx as default}`
 
+#### 3.export和import复合写法
 
-### 8.console
+```javascript
+export {foo, bar} from 'my_module';
+
+// 可简单理解为, 写成一行后, foo和bar并没有导入到当前模块中, 只是相当于转发
+import {foo, bar} from 'my_module';
+export {foo, bar};
+```
+
+#### 4.跨模块常量
+
+
+
+### 8.console 
 
 - `console.log()`: 普通输出;
 - `console.time/timeEnd`: 计时;
