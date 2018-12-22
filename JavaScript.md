@@ -2,21 +2,22 @@
 
 ## 1.基础概念
 
-- JavaScript 和 ECMAScript：
-  - ECMAScript和JavaScript的关系: 前者是后者的规格, 后者是前者的实现;
-  - DOM ：文档对象模型，针对 XML 但经过扩展用于 HTML 的应用程序接口；将整个页面映射为一个多层节点结构；
-  - BOM ：浏览器对象模型，访问和操作浏览器窗口；使用BOM可以控制浏览器显示的页面以外的部分；
+> JavaScript 和 ECMAScript：
+>
+> - `ECMAScript`和`JavaScript`的关系: 前者是后者的规格, 后者是前者的实现;
+> - DOM ：文档对象模型，针对 XML 但经过扩展用于 HTML 的应用程序接口；将整个页面映射为一个多层节点结构；
+> - BOM ：浏览器对象模型，访问和操作浏览器窗口；使用BOM可以控制浏览器显示的页面以外的部分；
 
 ### 1.基本数据类型
 
-> ECMAScript共有5种基本数据类型（Undefined, Null, Boolean, Number, String）和一种复杂数据类型(Object)，使用`typeof`可以查看对象的类型；
+> ECMAScript共有5种基本数据类型（`Undefined, Null, Boolean, Number, String` ）和一种复杂数据类型(`Object`, 一组数据和功能的集合)，使用`typeof`可以查看对象的类型；
 >
-> 基本类型为什么可以有属性和方法：通过包装类实现；
+> 基本类型为什么可以有属性和方法?：通过包装类实现；
 
-- Undefined 类型：只有一个值，`undefined`，表示变量使用`var`声明但未对其加以初始化；
-- Null 类型：只有一个值，`null`，表示一个空对象指针；如果对象声明用于将来保存对象，那么最好将该变量初始化为`null`;
-- Boolean 类型：只有两个字面量，`true、false`；
-- Number 类型：
+- `Undefined` 类型：只有一个值，`undefined`，表示变量使用`var`声明但未对其加以初始化；
+- `Null` 类型：只有一个值，`null`，表示一个空对象指针；如果对象声明用于将来保存对象，那么最好将该变量初始化为`null`;
+- `Boolean`  类型：只有两个字面量，`true、false`；
+- `Number `类型：
   - 可以赋值为10进制，0开头的八进制，0x开头的十六进制的整数；
   - 可以赋值为浮点数；
   - 可表示值范围：Number.MAX_VALUE~Number.MIN_VALUE；
@@ -25,10 +26,25 @@
     - 1.与任何值都不相等，包括自身；
     - 2.与任何数的计算都为NaN；
     - 3.可通过`isNaN( )`判断是否为“数值”，能否“不是数值”，注意！！！如果能转为数值，则为false；
-- String 类型：
+- `String`  类型：由0或多个16位的`Unicode`字符组成的字符序列;
+  - 字符串不可变;
 - `typeof `和`instanceof`
   - `typeof a`：变量a的类型；一般只返回几个类型：`string, number, boolean, function, undefined`；
   - `a instanceof constructor`：测试原型和实例的关系；
+
+### 2.包装类型
+
+> ECMAScript 提供3个特殊的引用类型: `Boolean, Number, String`, 具有特殊的属性和方法, 便于操作对应的基本类型;
+>
+> 基本类型不是对象, 不能提供方法和属性, 为了便于操作, js提供了包装类型, 
+
+- 后台自动完成一下处理, 以String为例:
+  - 1.创建`String`类型的一个实例;
+  - 2.在实例上调用指定方法;
+  - 3.销毁实例;
+-  一些易混点:
+  - `var s1 = String('hello)`: `String()` 为转型函数, 将任意类型转为字符串; 
+  - `var obj2 = new String('hello')`: 显示的创建包装类对象,
 
 ### 2.符号
 
@@ -269,7 +285,13 @@
 
 - 原型式继承
 
-## 3.函数表达式
+## 3.函数
+
+> 函数声明: `function sayHi() { alert('Hi') }`;
+>
+> 函数表达式:`var funcName = function () { alert('Hi') }`
+>
+> 解析器会率先读取函数声明, 并使其在执行任何代码之前可用; 至于表达式, 则必须等到解析器执行到所在的代码行, 才会被解释执行;
 
 - 匿名函数：`function`关键字后没有标识符，也叫`lambda`函数；
 
@@ -281,7 +303,17 @@
   })('hello world!');
   ```
 
-### 1.闭包：
+### 1.函数基础
+
+> 函数内部有两个特殊属性, `arguments, this`
+
+- `arguments`: 类数组对象, 包含传入的所有参数;
+  - `arguments.callee`: 指向拥有这个`arguments`对象的函数;
+- `this`: 指向函数执行的环境对象;
+- `apply(), call()`: 作用一致, 参数不同, 第一个参数为函数上下文的对象, `call`需要参数列表, `apply`需要参数组成的数组;
+  - 可以扩充作用域;
+
+### 2.闭包：
 
 > 闭包：阻止垃圾回收器将变量从内存中移除，使在创建变量的执行环境的外部能够访问该变量；
 >
@@ -290,23 +322,6 @@
 > 实现原理：一般函数执行完毕，局部活动对象就会被销毁，内存中仅保留全局作用域；但是闭包：内部函数会将__包含函数的活动对象__添加到它的作用域链中；闭包就可以访问包含函数的所有变量，并且由于匿名函数的引用，这些对象也不会销毁；（十分类似C语言函数内部用`static`声明；）
 
 - 闭包包围的是变量空间，而非值；
-
-### 2.call 方法
-
-- 个人理解：当函数默认调用时，`this`指向`window`，当用call方法调用，可以传入指定的运行环境，`this`指向传入对象；
-
-- `function.call(thisArg, arg1, arg2, ...)`：给定this值，和一些参数；
-
-  ```python
-  function Product(name, price) {
-      this.name = name;
-      this.price = price;
-  }
-  
-  Product.call(thisObject, name, price);
-  ```
-
-  > 关于new：例如上述例子中，如果`var p = new Product('name', price)` 则生成了一个具有name，price属性的对象，new做了关键性的几部：1.创建一个obj`var obj = {}`；2.将`__proto__` 指向 `Product.prototype`（原型对象）；3.调用`Product.call()`，传入`obj`;
 
 ### 3.this剖析  [this原理](http://www.ruanyifeng.com/blog/2018/06/javascript-this.html)
 
@@ -321,11 +336,11 @@ foo()       // 2, this指向Window
 obj.foo()   // 1, this指向obj
 ```
 
-
-
 ## 4.BOM
 
 > BOM 的核心对象是`window `,它表示浏览器的一个实例；它既是通过 JavaScript 访问浏览器窗口的一个接口，又是 ECMAScript 规定的 Global 对象。
+>
+> 其他重要对象: `locatiion, history, navigator`
 >
 > 重要点：location.href 跳转，间歇调用和超时调用；
 
@@ -345,6 +360,7 @@ obj.foo()   // 1, this指向obj
   - `href`：设置或返回完整的URL；==设置后会直接跳转到新的URL上==；
   - `search`：设置或返回从问号（？）开始的URL（查询部分）；
   - `host`：设置或返回主机名和当前 URL 的端口号。
+  - `hash`: url中的hash(#号后跟零或多个字符)
 
 - 对象方法：
 
@@ -510,9 +526,11 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 - `let`: 创建块级作用域变量;
   - 不存在变量提升, 必须先声明再使用;
   - 在相同作用域内,不允许重复声明;
+  - 暂时性死区: 声明的变量绑定这个区域, 不受外部的影响;
 - `const`: 声明常量;
   -  `const`保证的是变量指向的那个内存地址不变, 而内存地址上的值则可能随着类型不同而不受控制, 需要注意;
-  -  `const`声明变量也具有块级作用域, 
+  -  `const`声明变量也具有块级作用域;
+  -  类似`let`, 形成暂时性死区;
 - 顶层对象
   - 浏览器环境是`window`对象, 在Node指`global`对象, 
 
@@ -561,9 +579,24 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
   }
   ```
 
+### 4.数组扩展
 
+- 扩展运算符(spread): `...`, 类似`rest`参数, 将一个数组转为逗号分隔的参数序列;
 
-### 4`for...of VS for...in`
+  ```JavaScript
+  var a = [1,2,3];
+  console.log(...a) // 等同于 console.log(1,2,3) ==> 输出 1 2 3
+  ```
+  - 复制数组: `var b = [...a]`;
+  - 合并数组: `[...a, ...b]`;
+  - 可用于字符串, 用于分解字符串;
+  - 可用于任何提供`iterator`的接口;
+
+- `Array.from()`: 将类似数组对象(array-like)和可遍历对象转换为真正的数组;
+
+- `Array.of`: 
+
+### 4.`for...of VS for...in`
 
 - `for...of`: 遍历迭代器;
 - `for...in`: 遍历对象属性;
