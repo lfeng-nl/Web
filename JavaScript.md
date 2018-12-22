@@ -647,6 +647,12 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
   - 一个模块只能用一个默认输出;
   - `export default`就是输出一个叫做`default`的变量或方法, 等同于`export {xx as default}`
 
+- `require, exports, module.exports, export, export default`:
+
+  - `require`: node和es6都支持的引入;
+  - `export/ import` : es6 支持的导出引入;
+  - `module.exports exports`: 只有node支持的导出;
+
 #### 3.export和import复合写法
 
 ```javascript
@@ -657,8 +663,6 @@ import {foo, bar} from 'my_module';
 export {foo, bar};
 ```
 
-#### 4.跨模块常量
-
 
 
 ### 8.console 
@@ -667,6 +671,55 @@ export {foo, bar};
 - `console.time/timeEnd`: 计时;
 - `console.table(data)`: 以表格形式输出;
 - `console.assert(isDebug, 'log')`: 断言, 根据isDebug进行输出;
+
+### 9.编程风格
+
+- 字符串
+
+  - 静态字符串一律使用单引号或反引号, 不适用双引号. 动态字符串使用反引号;
+
+- 解构赋值
+
+  - 函数参数是对象成员, 优先使用解构赋值;
+
+  - 如果函数返回多个值, 优先使用对象的解构赋值, 而不是数组的解构赋值, 方便更改返回值和返回值顺序;
+
+    - ```javascript
+      function test(input) {
+          return {left:xx, right:xx, top:xx, bottom:xx};
+      }
+      const {left, right } = test(input);
+      ```
+
+- 对象
+
+  - 单行定义的对象, 最后一个成员不以逗号结尾, 多行定义的对象, 最后以逗号结尾
+
+  - ```JavaScript
+    const a = {k1: v1, k2:v2};      // 单行, 不以逗号结尾
+    const b = {                     // 多行, 以逗号结尾
+        k1: v1,
+        k2: v2,
+    }
+    ```
+
+  - 对象定义后不应该随意增加新属性, 如果不可避免, 需要使用`Object.assign`方法
+
+- 数组
+
+  - !! 使用扩展运算符(...)拷贝数组, `const itemCopy = [...items]`;
+  - 使用`Array.from()`将类似数组的对象转为数组;
+
+- 函数
+
+  - 优先使用箭头函数,`(() => { console.log('hello');})(); `
+  - 合适场合使用新特性rest运算符`...`, 默认参数;
+
+- 模块
+
+  - 使用es6语法支持的模块导入导出 , 避免使用node语法的模块导入导出;
+  - 如果模块默认输出一个函数, 函数名首字母应该小写; 默认输出一个对象, 对象首字母大写;
+  - 
 
 ## 8.AJAX
 
