@@ -29,10 +29,8 @@ var vm = new Vue({
 - 文本: `{{ msg }}`
 - 原始HTML: `<div v-html="rawHtml"></div>` --> `<div> xxxxxx </div>`
 - 作用于特性: `<div v-bing:id="dynamicId"></div>`
-- if: `<p v-if="seen">通过seen的值决定是否存在此条标签</p>`, 
-- for: `<li v-for="todo in todos">{{ todo }}</li>`
-- 修饰符: 以`.`指明的特殊后缀, 用于指出一个指令应该以特殊方式绑定;
-- 缩写: `v-bind --> : ;  v-on --> @`
+
+> 以上都支持JavaScript表达式
 
 ### 3.计算属性和侦听器
 
@@ -66,13 +64,13 @@ var vm = new Vue({
   },
   watch: {
   	// 当 msg 变化是被调用    
-  	msg: function() {}
+  	msg: function(newValue, oldValue) {}
   }
   ```
 
-## 2.[选项/数据](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E6%95%B0%E6%8D%AE)
+## 2. [VUE实例中的选项/数据](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E6%95%B0%E6%8D%AE)
 
-> ==: 如果在数据对象中使用箭头函数, this的指向将不会按照期望指向Vue实例==
+> ==如果在数据对象中使用箭头函数, this的指向将不会按照期望指向Vue实例==, 参看es6, 匿名函数
 
 ### 1.data
 
@@ -97,22 +95,42 @@ var vm = new Vue({
 
 ## 5.[指令](https://cn.vuejs.org/v2/api/#%E6%8C%87%E4%BB%A4)
 
-### 1.v-bing,简写为`:`
+> 修饰符 (Modifiers) : 是以半角句号 `.` 指明的特殊后缀，用于指出一个指令应该以特殊方式绑定; 
+
+### 1.v-bing, 特性绑定, 简写为`:`
 
 > 绑定属性, class, style, 等
 
-#### 1.绑定class
+#### 1.绑定`class`
+
+```html
+<!-- 对象语法: 由 isActive 值决定 active 是否存在 -->
+<div v-bind: class="{active: isActive}"></div>
+<!-- 数组语法 -->
+<div :class="[classA, classB, 'class1']"></div>
+```
+
+
 
 - 对象语法: `<div v-bind: class="{active: isActive}"></div>`, 由`isActive`决定`active`是否存在;
   - 也可以将整个`{xx}`对象作为一个参数, `<div v-bind: class="classObject"></div>`, 由决定具体类;
 - 数组语法: `<div v-bind:class="[activeClass,  errorClass]"></div>`: 对数组中值进行赋值;
-- 
 
-### 2.v-if 和 v-show
+#### 2.绑定其他属性
+
+```html
+<img :src="imageSrc">
+<!-- 使用js表达式拼接 -->
+<img :src="'/path/to/images/' + fileName" 
+```
+
+
+
+### 2.v-if 和 v-show, 条件渲染
 
 > v-if 决定节点是否存在, v-show决定节点是否显示
 
-#### 1.v-if
+#### 1.v-if 
 
 - ==`v-if`==: `<span v-if="isExist"></span>`;
 - ==`v-else`==: `<span v-if="type === 'A'">A</span> <span v-else>B</span>`
@@ -122,13 +140,17 @@ var vm = new Vue({
 
 - `<div v-show="ok">hello</div>`
 
-### 3.v-for
+### 3.v-for, 列表渲染
 
 - 列表的循环: `v-for="item in items"` 或者 `v-for="(item, index) in items"`
 - 对象的循环: `v-for="value in item"` 或者 `v-for="(value, key) in item"`
 - 可以为渲染出的dom增加唯一标识key: `<div v-for="item in items" :key="item.id">
 
-### 4.v-on, 简写为@
+### 4.v-on, 事件处理, 简写为@
+
+### 5. v-mode, 表单输入绑定
+
+
 
 ## 组件
 
