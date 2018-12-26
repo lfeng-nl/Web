@@ -99,11 +99,13 @@ var vm = new Vue({
 
 ### 1.v-bing, 特性绑定, 简写为`:`
 
-> 绑定属性, class, style, 等
+> 动态地绑定一个或多个特性，或一个组件 prop 到表达式;
 
 #### 1.绑定`class`
 
 ```html
+<!-- 单个绑定 -->
+<div :class="oblClassA"></div>
 <!-- 对象语法: 由 isActive 值决定 active 是否存在 -->
 <div v-bind: class="{active: isActive}"></div>
 <!-- 数组语法 -->
@@ -124,33 +126,68 @@ var vm = new Vue({
 <img :src="'/path/to/images/' + fileName" 
 ```
 
+#### 3.绑定prop
+
+```html
+<!-- prop 绑定“prop”必须在 my-component 中声明-->
+<my-component :prop="someThing"></my-component>
+```
+
 
 
 ### 2.v-if 和 v-show, 条件渲染
 
-> v-if 决定节点是否存在, v-show决定节点是否显示
+> v-if 决定节点是否存在, v-show决定节点是否显示;
+>
+> v-if 有更高的切换开销, v-show 有更高的初始开销;
 
 #### 1.v-if 
+
+- 根据表达式的值的真假条件渲染元素。
 
 - ==`v-if`==: `<span v-if="isExist"></span>`;
 - ==`v-else`==: `<span v-if="type === 'A'">A</span> <span v-else>B</span>`
 - ==`v-else-if`==: `<span v-if="type==='A'">A</span> <span v-else-if="type='B'">B</span> <span v-else>C</span>`
+- 当同`v-for`共同作用时, `v-for`有更高的优先级; `v-if`将分别作用于每一个`v-for`循环中;
 
 #### 2.v-show
+
+- 根据表达式之真假值，切换元素的 `display` CSS 属性。
 
 - `<div v-show="ok">hello</div>`
 
 ### 3.v-for, 列表渲染
 
+> 可作用于: String, Array, Object, number
+>
+> number: ==循环出 1到指定数;==
+>
+> Object: ==循环出所有属性值;==
+
 - 列表的循环: `v-for="item in items"` 或者 `v-for="(item, index) in items"`
-- 对象的循环: `v-for="value in item"` 或者 `v-for="(value, key) in item"`
+- 对象的循环: `v-for="value in item"` 或者 `v-for="(value, key) in item"` 或者 ` v-for="(value, key, index) in item"`
 - 可以为渲染出的dom增加唯一标识key: `<div v-for="item in items" :key="item.id">
 
-### 4.v-on, 事件处理, 简写为@
+### 4.v-on, 事件处理, 简写为'@'
 
-### 5. v-mode, 表单输入绑定
+> 绑定事件监听器。事件类型由参数指定。表达式可以是一个方法的名字(`@click=functionName`)或一个内联语句(`@click=functionNane(xxx, xx), 或 @click=alert('hello')`)，可以跟修饰符(`例如.stop`);
+>
+> 作用于元素dom可以监听原生DOM事件, 在==自定义元素组件上==可以监听==自定义事件==
 
+- 修饰符: 
+  - `.stop`: 停止向上冒泡;
+  - `.self`: 本身触发;
+  - `.once`: 只触发一次回调;
+  - `.left`: 点击左键时触发;
+  - `.right`: 点击右键时触发;
+- 监听自定义事件:
+  - 
 
+### 5. v-model, 表单输入绑定
+
+> 在表单控件或者组件上创建双向绑定
+
+- 可以作用在: `<input>, <select>, <textarea>, components `
 
 ## 组件
 
