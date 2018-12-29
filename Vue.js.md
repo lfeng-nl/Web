@@ -15,7 +15,7 @@ var vm = new Vue({
 })
 ```
 
-- 只有Vue实例被创建时`data`中存在的属性才是响应式的; 这些数据改变时, 试图会进行重渲染;
+- 只有 `Vue`实例被创建时`data`中存在的属性才是响应式的; 这些数据改变时, 试图会进行重渲染;
 - `Vue`实例还会暴露一些`$`前缀的属性和方法, 具有特殊作用和功能, 详见 [API](https://cn.vuejs.org/v2/api/#%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7)
 - 生命周期钩子:
   - `beforeCreate`: 实例创建前,
@@ -68,32 +68,75 @@ var vm = new Vue({
   }
   ```
 
-## 2. [VUE实例中的选项/数据](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E6%95%B0%E6%8D%AE)
+## 2.VUE实例中的选项
+
+### 1. [VUE实例中的选项/数据](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E6%95%B0%E6%8D%AE)
 
 > ==如果在数据对象中使用箭头函数, this的指向将不会按照期望指向Vue实例==, 参看es6, 匿名函数
 
-### 1.data
+#### 1.data
 
-### 2.computed
+#### 2.computed
 
 > 计算属性, 数据值由计算得到, 注意:==如果计算属性使用箭头函数, 则`this`不会指向这个组件的实例,不过可以通过将例作为函数的第一个参数来访问; `aDouble: vm=>vm.a*2`==
 
-### 3.methods
+#### 3.methods
 
 - 放置事件处理的相关函数;
 
-### 4.watch
+#### 4.watch
 
 > 通过键值对的形式,监控某个数据, 当数据变化时, 调用对应的方法.
 
-## 3.[选项/DOM](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-DOM)
+### 2.[选项/DOM](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-DOM)
 
-### 1.el
+#### 1.el
 
-- 提供一个在页面上已存在的DOM元素作为Vue实例的挂载目标.
-- 
+- 提供一个在页面上已存在的`DOM`元素作为`Vue`实例的挂载目标. 可以是一个CSS选择器, 也可以是一个`HTMLElement`实例; 
+- 如果实例化时存在这个选项, 实例会立即进入编译过程, 否则, 需要显示调用`vm.$.mount()`手动开启编译.
 
-## 5.[指令](https://cn.vuejs.org/v2/api/#%E6%8C%87%E4%BB%A4)
+#### 2.template
+
+- 将会替换挂载的元素;
+
+#### 3.render 渲染函数
+
+- 字符串模板的替代方案, 接收一个`createElement`方法作为第一个参数来创建`VNode`
+
+  > ```javascript
+  > document.createElement(tagName [, options]);
+  > ```
+
+#### 4. renderError
+
+- 开发者环境中工作, 遇到错误时, 提供另外一种渲染输出; 
+
+### 3.选项/生命周期
+
+- `beforeCreate`:
+- `create`:
+- `beforeMount`:
+- `mounted`:
+- `beforeUpdate`:
+- `updated`:
+- `activated`:
+- `deactivated`:
+- `beforeDestory`:
+- `destoryed`:
+- `errorCaptured`: 捕获子孙组件的错误时被调用.
+
+### 4.选项/资源
+
+#### 5.选项/组合
+
+### 6.选项/其他
+
+- `name`: 组件名称;
+- `functional`: 使组件无状态(无data)无实例(没有this上下文);
+- `model`: 
+- `
+
+## 3.[指令](https://cn.vuejs.org/v2/api/#%E6%8C%87%E4%BB%A4)
 
 > 修饰符 (Modifiers) : 是以半角句号 `.` 指明的特殊后缀，用于指出一个指令应该以特殊方式绑定; 
 
