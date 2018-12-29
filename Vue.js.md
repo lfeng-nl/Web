@@ -76,6 +76,11 @@ var vm = new Vue({
 
 #### 1.data
 
+> 组件的定义只接受function
+
+- 以`_, $`开头的属性不会被`Vue` 实例代理, 
+- 以一个组件被定义, `data` 必须声明为返回一个初始数据对象的函数; 因为组件可能被用来创建多个实例。如果 `data` 仍然是一个纯粹的对象，则所有的实例将**共享引用**同一个数据对象;
+
 #### 2.computed
 
 > 计算属性, 数据值由计算得到, 注意:==如果计算属性使用箭头函数, 则`this`不会指向这个组件的实例,不过可以通过将例作为函数的第一个参数来访问; `aDouble: vm=>vm.a*2`==
@@ -232,13 +237,20 @@ var vm = new Vue({
 
 - 可以作用在: `<input>, <select>, <textarea>, components `
 
-## 组件
+## 4.组件
+
+> 组建也是`Vue`的实例, 具有一些特殊点: 1.data必须为函数, 返回一个对象;
 
 ### 1.组件注册
 
-- 全局注册: `Vue.component('my-component-name', {/*....*/})`: 可以用于任何新创建的Vue跟实例中.
-- 局部注册: `var ComponentA={/*....*/}; new Vue({components:{'component-a': ComponentA}})`: components中的每个属性名都是一个组件名称, `ComponentA`为一个js对象, 包含`template, data`等组件所需属性;
-- 在模块系统中: `import ComponentA form './ComponentA'`;
+- 全局注册: `Vue.component('my-component-name', {/*....*/})`
+  - 注册后, 可以用于任何新创建的`Vue`根实例中, 也包括组件树的所有组件的模板中.
+- 局部注册
+  - 1.通过JavaScript对象定义组件: `var ComponentA={/*....*/}; `
+  - 2.通过实例中的`components` 注册: `new Vue({components:{'component-a': ComponentA}})`:
+  - 局部注册的组件在其子组件中不可用;
+- 在模块系统中局部注册:
+  -  `import ComponentA form './ComponentA'`;
 - 基础组件的自动化全局注册: 
 
 ### 2.Prop
