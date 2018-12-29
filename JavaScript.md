@@ -647,7 +647,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
   - 一个模块只能用一个默认输出;
   - `export default`就是输出一个叫做`default`的变量或方法, 等同于`export {xx as default}`
 
-- `require, exports, module.exports, export, export default`:
+- ==`require, exports, module.exports, export, export default`==:
 
   - `require`: node和es6都支持的引入;
   - `export/ import` : es6 支持的导出引入;
