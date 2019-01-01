@@ -68,9 +68,9 @@ var vm = new Vue({
   }
   ```
 
-## 2.VUE实例中的选项
+## 2.创建实例过程中的选项
 
-### 1. [VUE实例中的选项/数据](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E6%95%B0%E6%8D%AE)
+### 1. [选项/数据](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E6%95%B0%E6%8D%AE)
 
 > ==如果在数据对象中使用箭头函数, this的指向将不会按照期望指向Vue实例==, 参看es6, 匿名函数
 
@@ -92,6 +92,27 @@ var vm = new Vue({
 #### 4.watch
 
 > 通过键值对的形式,监控某个数据, 当数据变化时, 调用对应的方法.
+
+#### 5.props
+
+`props `可以是==数组或对象==，用于接收来自父组件的数据。props 可以是简单的数组，或者使用对象作为替代，对象允许配置高级选项，如类型检测、自定义校验和设置默认值。
+
+```javascript
+{
+  props: {
+    title: String,
+    likes: Number,
+    isPublished: Boolean,
+    commentIds: Array,
+    author: Object
+  }
+}
+```
+
+- 父组件可以通过直接传值或绑定的方式传值,`<component-a :f-data="c-data"></component-a>`
+- 所有的prop使其父子间形成==单项下行绑定==, 父组件更新数据会传递到子组件, 但反过来不行; 子组件内不允许修改prop中的值;
+- props可以不仅可以类型, 还可以约束默认值, 是否为必填等;
+- 
 
 ### 2.[选项/DOM](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-DOM)
 
@@ -141,7 +162,15 @@ var vm = new Vue({
 - `model`: 
 - `
 
-## 3.[指令](https://cn.vuejs.org/v2/api/#%E6%8C%87%E4%BB%A4)
+## 3.实例的属性和方法
+
+### 1.属性
+
+### 2.方法
+
+- `vm.$emit('eventName', [...args])`: 触发当前实例上的指定事件, 并将产生传递个接收器;
+
+## 4.[指令](https://cn.vuejs.org/v2/api/#%E6%8C%87%E4%BB%A4)
 
 > 修饰符 (Modifiers) : 是以半角句号 `.` 指明的特殊后缀，用于指出一个指令应该以特殊方式绑定; 
 
@@ -237,7 +266,7 @@ var vm = new Vue({
 
 - 可以作用在: `<input>, <select>, <textarea>, components `
 
-## 4.组件
+## 5.组件
 
 > 组建也是`Vue`的实例, 具有一些特殊点: 1.data必须为函数, 返回一个对象;
 
@@ -245,8 +274,9 @@ var vm = new Vue({
 
 - 全局注册: `Vue.component('my-component-name', {/*....*/})`
   - 注册后, 可以用于任何新创建的`Vue`根实例中, 也包括组件树的所有组件的模板中.
+  - `Vue.component('component-name')`:获取组件构造器; 
 - 局部注册
-  - 1.通过JavaScript对象定义组件: `var ComponentA={/*....*/}; `
+  - 1.通过`JavaScript`对象定义组件: `var ComponentA={/*....*/}; `
   - 2.通过实例中的`components` 注册: `new Vue({components:{'component-a': ComponentA}})`:
   - 局部注册的组件在其子组件中不可用;
 - 在模块系统中局部注册:
@@ -282,6 +312,26 @@ var vm = new Vue({
 
 - 通过`this.$emit('my-event')`: 
 - `.sync`
+
+### 4.内置组件
+
+- `component`: 渲染一个“元组件”为动态组件。依 `is` 的值，来决定哪个组件被渲染。
+
+  - ```html
+    <!-- 动态组件由 vm 实例的属性值 `componentId` 控制 -->
+    <component :is="componentId"></component>
+    ```
+
+- `keep-alive`: 抽象组件, 不会渲染为DOM节点, 用`<keep-alive>` 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们. 
+
+### 5.插槽
+
+> 用于接收组件标签之间传入的内容
+
+- 当组件没有定义`<slot>`标签的元素时, 任何传入的内容都会被丢弃;
+- 具名插槽: 当希望定义多个可接收的插槽时, 可以` <slot name="header"></slot>`指定插槽的名字;
+  - 当传递内容时, 需要指定`<div slot="slotName"></div>`, 或整体用`<template slot="slotName">`包裹;
+- 组件在定义时, 可以在内部指定内容;
 
 ## 命名规则
 

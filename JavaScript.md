@@ -596,6 +596,17 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 
 - `Array.of`: 
 
+### 5.对象扩展
+
+- 允许直接写入变量和函数, 作为对象的属性和方法,
+
+  - ```javascript
+    var a = 'a'
+    var obj = {a, method(){console.log('method')}} 
+    ```
+
+  - 
+
 ### 4.`for...of VS for...in`
 
 - `for...of`: 遍历迭代器;
