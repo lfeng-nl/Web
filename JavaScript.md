@@ -1,5 +1,7 @@
 
 
+# I.基础
+
 ## 1.基础概念
 
 > JavaScript 和 ECMAScript：
@@ -428,18 +430,20 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 > 文档对象模型，是针对HTML和XML文档的一个API。DOM描绘了一个层次的节点树，允许开发人员添加，移除和修改页面的某一部分。
 >
 > ==document== 对象是HTMLDocument的一个实例，表示整个HTML页面；
+>
+> DOM操作往往是js中开销最大的部分，应尽量避免DOM操作
 
-### 1.节点层次：
+### 1.节点层次和类型
 
-- 所有标记页面表现为一个特定节点为根节点的树形结构；HTML页面的根节点为`Document`
+- 所有标记页面表现为一个特定节点为根节点的树形结构；HTML页面的根节点为`document`
 - ==元素节点向下包括：属性节点、文本节点、其他元素节点.==..
 - 所有的节点类型，JS中以`Node`类型实现；每个节点由`nodeType`定义其属性；
 - `nodeType`：
   - 元素标签类型（1）
   - 属性类型（2）
   - 文本类型（3）
-  - 注释（8）
-  - Document,根节点（9）
+  - 注释类型（8）
+  - `Document`根节点类型（9）
 - `nodeName` ：不同类型的节点，名称意义不同
   - 元素节点的 `nodeName `是标签名称（大写）
   - 属性节点的 `nodeName` 是属性名称
@@ -469,11 +473,11 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
   - `document.title`属性：该页面标题；
   - `document.URL`属性：该页面完整的URL，例如`http://www.wrox.com/WileyCDA/`；
   - `document.body`属性：改页面的域名，例如`www.wrox.com`；
-- 节点创建删除
+- 提供节点创建删除
   - `document.createElement('div')`：创建一个元素节点，参数为元素的节点名;
   - `document.createTextNode('xxx') `：创建文本节点，参数为需要插入节点中的文本；
 - 节点的查找
-  - `document.getElementById()`：通过id查找节点；
+  - `document.getElementById()`：通过id查找指定节点；
   - `document.getElementsByTagName()`：通过标签名查找节点，返回一个nodeList；
   - `document.getElementsByName()`：通过name查找节点，一般用于选定一组节点；
 
@@ -487,7 +491,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 >
 > http://mail.163.com/index.html：url，统一资源定位符；
 
-### 3.Element 类型 节点
+### 3.Element 类型节点
 
 - 重要属性
   - `id`：获取或设置元素的id值；
@@ -496,33 +500,69 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
   - `innerHTML`：内部HTML信息；
   - `attributes`：属性节点的动态集合；
 - 重要方法
-  - `getAttribute('xx')`：获取指定属性的值；
-  - `setAttribute('xxx', 'xxx')`：设置指定属性指定值；
-  - `removeAttribute('xxx')`：删除指定属性；
+  - `.getAttribute('xx')`：获取指定属性的值；
+  - `.setAttribute('xxx', 'xxx')`：设置指定属性指定值；
+  - `.removeAttribute('xxx')`：删除指定属性；
 
-### 4.Text 节点
+### 4.DOM扩展
 
-### 5.Attr节点
-
-- 不太会直接访问属性节点，都是通过`getAttribute(), setAttribute, removerAttribute`等方法操作；
+- `querySelector()`：接受一个css选择符，返回第一匹配到的元素；
+- `querySelectorAll()`：接受一个css选择符，返回一个NodeList对象；
+- `getElementsByClassName()`:
+- `dataset`：HTML5规定，可以为元素添加非标准的属性，但是要添加前缀`data-`，可以通过dataset以键值对映射的形式访问；
+- `innerHTML`：内容被解析为 DOM 子树，替换调用元素原来的所有子节点；
 
 ## 6.事件
 
-- 事件冒泡：事件开始由最具体的元素（文档中嵌套层次最深的那个节点）接收；然后逐级向上传播到不具体的节点；
-- 事件：用户或浏览器自身执行的某种动作，如`click, load, mouseover`； 响应某个事件的函数就叫事件处理程序；
-- 在事件处理程序中，通过`this`访问元素的任何属性和方法；
+### 1.事件流
 
-### 1.事件的种类
+- 事件冒泡：事件开始由最具体的元素（文档中嵌套层次最深的那个节点）接收；然后沿DOM树向上传播，事件在每级节点上都会发生，直到传播到document对象；
+- DOM2级事件”规定的事件流包括三个阶段:==事件捕获阶段==、==处于目标阶段==和==事件冒泡阶段==。
 
+### 2.事件处理函数
+
+- HTML事件处理程序：直接写在HTML中的事件处理程序；
+
+- `DOM0`级事件处理程序：将一个函数赋值给事件处理程序属性；
+
+  ```javascript
+  var btn = document.getElementById("myBtn");
+  btn.onclick = function(){
+      // 使用DOM0级方法指定的事件处理程序被认为是元素的方法，程序中的this引用当前元素
+      alert(this.id)
+  	alert("Clicked");
+  };
+  ```
+
+- `DOM2`级事件处理程序：`addEventListener(), removeEventListener()`，所有 DOM 节点中都包含这两个方法，并且它们都接受 3 个参数:==要处理的事件名==、作为==事件处理程序的函数==和一个==布尔值==。最后这个布尔值参数如果是 true，表示在捕获阶段调用事件处理程序;如果是 false，表示在冒泡阶段调用事件处理程序。
+
+  ```javascript
+  var btn = document.getElementById('myBtn');
+  btn.addEventListener('click', function(){alert('click')}, false);
+  ```
+
+- 通过`DOM0`级和`DOM2`级，this指向该元素；通过HTML添加的事件处理程序，`this`指向`window`
+
+### 3.事件对象
+
+> 在触发 DOM 上的某个事件时，会产生一个==全局的事件对象 event==，这个对象中包含着所有与事件有关的信息。包括导致事件的元素、事件的类型以及其他与特定事件相关的信息。在事件处理函数内可以直接访问event对象；
+>
+> 只有在事件处理程序执行期间，event 对象才会存在;一旦事件处理程序执行完成，event 对象就会被销毁。
+
+- 事件对象属性：
+  - currentTarget：当前事件处理程序所在那个元素；
+  - `target`：触发事件的目标元素；
+  - `type`：事件类型；
+  - `stopPropagation()`：阻止事件继续向上冒泡；
+  - `preventDefault()`：阻止默认行为；
+  - `clientX, clientY`: 鼠标坐标；
 - UI事件
   - `load`：当页面完全加载后会触发；
   - `resize`：浏览器窗口调整大小时触发；
   - `scroll`：滚动；
-
 - 焦点事件
   - `blur`：元素失去焦点时触发；
   - `focus`：元素获得焦点时触发；
-
 - 鼠标与滚轮事件
 
   - `click`：单击鼠标按钮时触发；
@@ -537,11 +577,110 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 
   - `load`：当页面完全加载后会触发；
 
-## 7.ES6
+## 7.错误与调试
 
-> 出于兼容性考虑, es6可以通过 Babel 转码为ES5 
+### 1.异常捕获
 
-### 1.局部变量和常量
+- `try...catch`...finaly：一场捕获和处理；
+
+  ```javascript
+  try{
+  // 可能会导致错误的代码 
+  } catch(error){
+  // 在错误发生时怎么处理 
+  } finally{
+  // 都会执行的代码部分
+  }
+  ```
+
+- `throw`：抛出异常，可以是任何类型，也可以是`new Error('message')`;
+
+### 2.调试技巧
+
+- `console`：向终端输出信息；
+  - 输出信息方式：`error, log, info, warn`;
+  - 分组输出：`console.group('第一组信息'); console.groupEnd('第一组信息')；`
+  - `console.dir()`：将对象以树形结构展现；
+  - `console.dirxml()`：显示某个节点的HTML/XML代码；
+  - `console.time(); console.timeEnd()`：显示代码运行时间；
+  - `console.table()`：表格化显示；
+
+
+
+
+
+
+
+## 8.AJAX和序列化
+
+### 1.AJAX
+
+> 基于XMLHttpRequest，实现ajax:
+
+```javascript
+//创建和发送请求
+xhr.open();
+xhr.send();
+//在收到响应后，响应的数据会自动填充 XHR 对象的属性；readyState：表示请求响应过程的当前阶段；status：响应状态；
+// 也可在open前 设置 onreadystatechange，实现异步请求
+xhr.onreadystatechange = function(){
+if (xhr.readyState == 4){
+    ...
+}
+```
+
+- 1.JQuery, $.ajax()
+
+  ```javascript
+  $.ajax({
+      url: 'xx',
+      method: 'POST',
+      data: '',
+  })
+  ```
+
+- 2.Axios:
+
+  ```javascript
+  // axios GET 请求事例
+  axios.get('/user', {
+      params: {
+        ID: 12345
+      }
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  ```
+
+- 3.fetch.js
+
+### 2.JSON
+
+- 序列化：将`JavaScript`对象转为`JSON`字符串：`JSON.stringify(xxxx)` ；
+- 反序列化：将`JSON`字符串转为`JavaScript`对象： `JSON.parse(xxx)` ；
+
+## 9.扩展
+
+### 1.localStroage，sessionStorage
+
+> HTML5中，新加入了一个localStorage特性，主要用来作为本地存储，解决了cookie存储空间（每条cookie 4K）不足的问题，一般浏览器支持5M大小的空间；
+>
+> localStorage与sessionStorage的唯一一点区别就是localStorage属于永久性存储，而sessionStorage属于当会话结束的时候，sessionStorage中的键值对会被清空 
+
+- `localStorage.getItem()`：读取值；
+- `localStorage.setItem()`：存储值；
+- `localStorage.clear()`：清除所有；
+- `localStorage.removeItem()`：清除指定；
+
+# II.ES6
+
+> 出于兼容性考虑, es6可以通过 `Babel` 转码为ES5 
+
+## 1.局部变量和常量
 
 > var声明的变量无块级作用域, 具有变量提升特性(先使用,后声明, 解析器会自动将声明提到开始处)
 
@@ -556,7 +695,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 - 顶层对象
   - 浏览器环境是`window`对象, 在Node指`global`对象, 
 
-### 2.解构赋值
+##  2.解构赋值
 
 - 数组/ `Iterator`接口的解构赋值
 
@@ -573,7 +712,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
   let { foo: baz } = { foo: 'aaa', bar: 'bbb' }; // 也可变量名(baz)与匹配模式(foo)不一致, baz = 'aaa'
   ```
 
-### 3.函数
+## 3.函数
 
 #### 1.默认值
 
@@ -601,7 +740,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
   }
   ```
 
-### 4.数组扩展
+## 4.数组扩展
 
 - 扩展运算符(spread): `...`, 类似`rest`参数, 将一个数组转为逗号分隔的参数序列;
 
@@ -618,7 +757,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 
 - `Array.of`: 
 
-### 5.对象扩展
+## 5.对象扩展
 
 - 允许直接写入变量和函数, 作为对象的属性和方法,
 
@@ -641,7 +780,7 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
 - `let a=[1,2,3]; foo(...a)`: 会将迭代器展开, 元素作为参数传递到函数中;
 - `(...a)=>{console.log(a)}`: 将传入的操作合并为一个可迭代对象;
 
-### 6.Module语法
+## 6.Module语法
 
 > 模块功能主要由两个命令构成: `export`和`import`;
 >
@@ -698,16 +837,7 @@ import {foo, bar} from 'my_module';
 export {foo, bar};
 ```
 
-
-
-### 8.console 
-
-- `console.log()`: 普通输出;
-- `console.time/timeEnd`: 计时;
-- `console.table(data)`: 以表格形式输出;
-- `console.assert(isDebug, 'log')`: 断言, 根据isDebug进行输出;
-
-### 9.编程风格
+## 7.编程风格
 
 - 字符串
 
@@ -755,41 +885,6 @@ export {foo, bar};
   - 使用es6语法支持的模块导入导出 , 避免使用node语法的模块导入导出;
   - 如果模块默认输出一个函数, 函数名首字母应该小写; 默认输出一个对象, 对象首字母大写;
   - 
-
-## 8.AJAX
-
-> 实现ajax:
->
-> 1.js原生XHR接口;
->
-> 2.JQuery, $.ajax()
->
-> 3.Axios,
->
-> 4.fetch.js
-
-### 1.原生XHR接口
-
-
-
-## 标准对象
-
-### 1.JSON
-
-- 序列化：将`JavaScript`对象转为`JSON`字符串：`JSON.stringify(xxxx)` ；
-- 反序列化：将`JSON`字符串转为`JavaScript`对象： `JSON.parse(xxx)` ；
-
-### 2.localStroage，sessionStorage
-
-> HTML5中，新加入了一个localStorage特性，主要用来作为本地存储，解决了cookie存储空间（每条cookie 4K）不足的问题，一般浏览器支持5M大小的空间；
->
-> localStorage与sessionStorage的唯一一点区别就是localStorage属于永久性存储，而sessionStorage属于当会话结束的时候，sessionStorage中的键值对会被清空 
-
-- `localStorage.getItem()`：读取值；
-- `localStorage.setItem()`：存储值；
-- `localStorage.clear()`：清除所有；
-- `localStorage.removeItem()`：清除指定；
-
-## 日常开发
+## 日常开发记录
 
 - 调试JS时无法找到动态加载的JS源文件：在文件开头或结尾加上`//@ sourceURL=xxx.js`，就可以在no domain中找到需要调试的文件；
