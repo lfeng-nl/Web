@@ -697,7 +697,7 @@ if (xhr.readyState == 4){
 
 ##  2.解构赋值
 
-- 数组/ `Iterator`接口的解构赋值
+- 数组 `Iterator`接口的解构赋值
 
   ```javascript
   let [a, b, c] = [1,2,3] // a=1, b=2, c=3
@@ -705,7 +705,7 @@ if (xhr.readyState == 4){
   let [a, b=4] = [1] //默认值, a=1, b=4
   ```
 
-- 对象的解构
+- 对象的解构，可以用于解析json对象；
 
   ```javascript
   let {a, b} = {a:'aaa', b:'bbb'} // 不同于数组, 对象解构只key有关, 与顺序无关
@@ -753,13 +753,21 @@ if (xhr.readyState == 4){
   - 可用于字符串, 用于分解字符串;
   - 可用于任何提供`iterator`的接口;
 
+- `Array.flat()`：将嵌套数组拉平；默认拉平一层，可以指定层数；
+
 - `Array.from()`: 将类似数组对象(array-like)和可遍历对象转换为真正的数组;
 
-- `Array.of`: 
+- `Array.of()`: 将位置参数直接转换为数组；表现稳定，不会根据参数个数而表现不一致；
+
+- `Array()`：
+
+    - 0个参数：返回一个空数组；
+    - 1个参数：返回指定个数的空数组；
+    - 2个及以上参数：返回同`Array.of()`；
 
 ## 5.对象扩展
 
-- 允许直接写入变量和函数, 作为对象的属性和方法,
+- 允许直接写入变量和函数, 分别直接作为对象的属性和方法, key就是变量名或函数名；
 
   - ```javascript
     var a = 'a'
@@ -768,17 +776,11 @@ if (xhr.readyState == 4){
 
 - `Object`新增方法:
 
-  - `Object.assign()`: 方法用于对象的合并
+  - `Object.assign()`: 对象的合并（浅拷贝），一般用于给对象增加属性或方法；
+  - 对与原型对象`__proto__`增加方法进行处理：
+      - `Object.setPrototypeOf()`（写操作）、`Object.getPrototypeOf()`（读操作）、`Object.create()`（生成操作）
 
-### 4.`for...of VS for...in`
-
-- `for...of`: 遍历迭代器;
-- `for...in`: 遍历对象属性;
-
-### 5.Spread/Rest操作符
-
-- `let a=[1,2,3]; foo(...a)`: 会将迭代器展开, 元素作为参数传递到函数中;
-- `(...a)=>{console.log(a)}`: 将传入的操作合并为一个可迭代对象;
+- 在内部新增`super`关键字，指向当前对象的原型对象；
 
 ## 6.Module语法
 
@@ -802,6 +804,11 @@ if (xhr.readyState == 4){
   
   ```
 
+- ==`export default`: 为模块指定默认输出== ; 
+    - 其他模块加载该模块时, `import`命令可以指定任意名称, 且也不需要大括号;
+    - 一个模块只能用一个默认输出;
+    - `export default`就是输出一个叫做`default`的变量或方法, 等同于`export {xx as default}`
+
 #### 2.`import`: 加载模块
 
 > 通过`import`加载其他模块`export`的变量,函数, 类等;
@@ -815,11 +822,6 @@ if (xhr.readyState == 4){
   ```
 
 - `import * as xxx from './xxx.js'`: 整体加载, 名称为`xxx`, 通过`.`访问具体变量;
-
-- ==`export default`: 为模块指定默认输出== ; 
-  - 其他模块加载该模块时, `import`命令可以指定任意名称, 且也不需要大括号;
-  - 一个模块只能用一个默认输出;
-  - `export default`就是输出一个叫做`default`的变量或方法, 等同于`export {xx as default}`
 
 - ==`require, exports, module.exports, export, export default`==:
 
@@ -885,6 +887,6 @@ export {foo, bar};
   - 使用es6语法支持的模块导入导出 , 避免使用node语法的模块导入导出;
   - 如果模块默认输出一个函数, 函数名首字母应该小写; 默认输出一个对象, 对象首字母大写;
   - 
-## 日常开发记录
+# III.日常开发记录
 
-- 调试JS时无法找到动态加载的JS源文件：在文件开头或结尾加上`//@ sourceURL=xxx.js`，就可以在no domain中找到需要调试的文件；
+- 调试JS时无法找到动态加载的JS源文件：在文件开头或结尾加上`//# sourceMappingURL=http://example.com/path/to/your/sourcemap.map`，就可以在`no domain`中找到需要调试的文件；
