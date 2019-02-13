@@ -129,24 +129,11 @@ var vm = new Vue({
 
 #### 5.props
 
-`props `可以是==数组或对象==，用于接收来自父组件的数据。props 可以是简单的数组，或者使用对象作为替代，对象允许配置高级选项，如类型检测、自定义校验和设置默认值。
+- 参考 组建 > props
 
-```javascript
-{
-  props: {
-    title: String,
-    likes: Number,
-    isPublished: Boolean,
-    commentIds: Array,
-    author: Object
-  }
-}
-```
+### 6.propsData
 
-- 父组件可以通过直接传值或绑定的方式传值,`<component-a :f-data="c-data"></component-a>`
-- 所有的prop使其父子间形成==单项下行绑定==, 父组件更新数据会传递到子组件, 但反过来不行; 子组件内不允许修改prop中的值;
-- props可以不仅可以类型, 还可以约束默认值, 是否为必填等;
-- 
+- 创建实例时传递 props，主要作用是方便测试；
 
 ### 2.[选项（DOM）](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-DOM)
 
@@ -187,11 +174,14 @@ var vm = new Vue({
 
 ### 5.选项/组合
 
+- `parent`：指定已创建的实例之父实例，在两者之间建立父子关系。子实例可以用 `this.$parent` 访问父实例，子实例被推入父实例的 `$children` 数组中。
+    - 尽量避免使用，推荐用 props 和 events 实现父子组件通信；
+
 ### 6.选项/其他
 
 - `name`: 组件名称;
 - `functional`: 使组件无状态(无data)无实例(没有this上下文);
-- `model`: 
+- `model`: 允许自定义组件在使用 `v-model` 时定制 prop 和 event名称；
 
 -----
 
@@ -311,11 +301,28 @@ var vm = new Vue({
   - `.right`: 点击右键时触发;
 - 也可以监听自定义事件
 
-### 5. v-model 表单输入绑定
+### 5. v-model 双向绑定
 
 > 在表单控件或者组件上创建双向绑定，它会根据控件类型自动选取正确的方法来更新元素；本质上不过是语法糖，它负责监听用户的输入事件以更新数据，并对一些极端场景进行一些特殊处理；
 
 - 可以作用在: `<input>, <select>, <textarea>, components（自定义组件） `
+
+- 作用于组件：
+
+    - 一个组件的`v-model`默认会利用名为`value`的`prop`和名为`input`的事件；只要在组件内实现，1.props.value, 2.数据变化时触发`input`事件，并将值作为参数抛出；即可实现组件的v-model；
+
+    - 可以定义`model`的选项，定义prop的名称，和事件名称：
+
+        ```javascript
+        Vue.component('xx', {
+            model: {
+                prop: 'value_xx',
+                event: 'change'
+            }
+        })
+        ```
+
+        
 
 ### 6.v-html
 
@@ -333,28 +340,39 @@ var vm = new Vue({
 
 ## 5.组件
 
-> 组建也是`Vue`的实例, 具有一些特殊点: 1.data必须为函数, 返回一个对象;
+> 组建也是`Vue`的实例, 具有一些特殊点：1.定义时，data 必须为函数, 返回一个数据对象； 2.具有组件名；
+>
+> ？ 为什么data需要一个函数，返回一个数据对象：注册组件的本质其实就是建立一个组件构造器的引用，使用组件才是真正创建一个组件实例。所以，注册组件其实并不产生新的组件类，但会产生一个可以用来实例化的新方式。
+>
+> 组件名：推荐 PascalCase (首字母大写命名)的命名规则；在html中引用时，采用kebab-case (短横线分隔命名) 的方式引用；
 
 ### 1.组件注册
 
-- 全局注册: `Vue.component('my-component-name', {/*....*/})`
+- 全局注册: `Vue.component('ComponentName', {/* 对象 */})`
   - 注册后, 可以用于任何新创建的`Vue`根实例中, 也包括组件树的所有组件的模板中.
-  - `Vue.component('component-name')`:获取组件构造器; 
+  - `Vue.component('ComponentName')`:获取组件构造器; 
 - 局部注册
-  - 1.通过`JavaScript`对象定义组件: `var ComponentA={/*....*/}; `
-  - 2.通过实例中的`components` 注册: `new Vue({components:{'component-a': ComponentA}})`:
+  - 1.通过`JavaScript`对象定义组件: `var ComponentA={/* 对象 */}); `
+  - 2.通过实例中的`components` 注册: `new Vue({components:{'ComponentA': ComponentA}})`:
   - 局部注册的组件在其子组件中不可用;
 - 在模块系统中局部注册:
   -  `import ComponentA form './ComponentA'`;
 - 基础组件的自动化全局注册: 
 
-### 2.Prop
+### 2.props
 
-- Prop名如果采用驼峰命名, 在DOM中使用时需要采用短横线分割命名(HTML大小写不敏感)
+> 组件在被外界引用时，外界可以影响或传入组件的数据；该值只能传递给组件，组件不能修改；
 
-- 静态传递Prop时, 都默认为String类型, 如果需要传递数字, 布尔等需要绑定, `<blog-post :likes='42'</blog-post>`
+- Prop名可以采用PascalCase (首字母大写命名)，在引用组建时，采用kebab-case (短横线分隔命名)；
 
-- 单向数据流: prop形成了父到子的单向绑定, 可以通过父更新子, 不能通过子更新父;
+- 传递Prop时, 都默认为String类型, 如果需要传递数字, 布尔等需要绑定，让vue去解析出需要的值：
+
+    -  `<blog-post :likes="42"</blog-post>`
+    -  `<blog-post :likes="true"</blog-post>`
+
+- 单向数据流: prop是用来向组件传递一些数据，组件自身不能修改此数据，如果需要将数据通知到调用者，一般可以采用一下方式：
+
+    - 定义一个函数，通过子组件进行触发：给组件绑定某个函数，在组件内合适时机进行触发`vm.$emit()`；
 
 - prop验证: 通过对象, 指定prop的类型, 
 
@@ -362,11 +380,16 @@ var vm = new Vue({
   props:{
       propA: Number, 
       propB:{
+        	// 数据类型  
           type: Number, 
-          default(){}
+          // 是否必要
+          required: true
      	}, 
       propC:{
+          // 定义验证方法
           validator(){}
+          // 默认值
+          default(){}
       }
   }
   ```
@@ -397,6 +420,30 @@ var vm = new Vue({
 - 具名插槽: 当希望定义多个可接收的插槽时, 可以` <slot name="header"></slot>`指定插槽的名字;
   - 当传递内容时, 需要指定`<div slot="slotName"></div>`, 或整体用`<template slot="slotName">`包裹;
 - 组件在定义时, 可以在内部指定内容;
+
+## 6.全局API
+
+### 1.`Vue.extend()`
+
+- 使用基础 Vue 构造器，创建一个“子类（VueComponent）”，可以用这个子类直接构建vue实例；
+
+- ```javascript
+    // 创建构造器
+    var Profile = Vue.extend({
+      template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+      data: function () {
+        return {
+          firstName: 'Walter',
+          lastName: 'White',
+          alias: 'Heisenberg'
+        }
+      }
+    })
+    // 创建 Profile 实例，并挂载到一个元素上。
+    new Profile().$mount('#mount-point')
+    ```
+
+- 
 
 ## 命名规则
 
