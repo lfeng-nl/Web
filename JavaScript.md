@@ -839,6 +839,78 @@ import {foo, bar} from 'my_module';
 export {foo, bar};
 ```
 
+## 7.Promise对象
+
+> 异步编程的一种解决方案, 比回调函数和事件更合理
+>
+> `Promise`就是一个容器,
+
+- 通过`Promise()`创建`Promise`实例, 传入一个函数, 该函数接受两个参数`resolve, reject`:
+
+  - ```javascript
+    function timeout(ms) {
+      // 创建 Promise 实例,resolve函数 将Promise对象的状态从 pending 变为 resolved, reject函数 将Promise对象的状态从 pending 变为 rejected;
+      return new Promise((resolve, reject) => {
+        setTimeout(resolve, ms, 'done');
+      });
+    }
+    
+    // then 方法分别指定 resolved 状态和rejected状态的回调函数 .then(function(value){}, function(error){})
+    timeout(100).then((value) => {
+      console.log(value);
+    });
+    ```
+
+- `catch, finally`:
+
+  - ```javascript
+    promise
+    // 成功执行
+    .then(result=>{})
+    // 错误执行
+    .catch(error=>{})
+    // 都会执行, 不接受任何参数, 与状态无关
+    .finally(()=>{});
+    ```
+
+- `Promise.all([p1, p2, p3])`: 只有`p1`、`p2`、`p3`的状态都变成`fulfilled`, 结果才为`fulfilled`;
+
+- `Promise.race([p1, p2, p3])`: 只要`p1`、`p2`、`p3`之中有一个实例率先改变状态, 整体结果的状态就改变, 且为该状态;
+
+## 8.Generator函数
+
+> 特征: 1.`function`关键字与函数名之间有一个`*`, 2.函数体内使用`yield`表达式;
+
+- 示例
+
+  - ```javascript
+    function *helloWorldGenerator() {
+        yield 'hello'
+        yield 'world'
+        return 'ending'
+    }
+    
+    var hw = helloWorldGenerator()
+    hw.next()  // 返回 {value: 'hello', done: false}
+    hw.next()  // 返回 {value: 'world', done: false}
+    hw.next()  // 返回 {value: 'ending', done: true}
+    hw.next()  // 返回 {value: undefined, done: true}
+    ```
+
+## 9.异步
+
+### 1.回调函数
+
+### 2.Promise
+
+### 3.Generator函数
+
+- 协程
+
+### 4.Thunk函数
+
+
+
 ## 7.编程风格
 
 - 字符串
