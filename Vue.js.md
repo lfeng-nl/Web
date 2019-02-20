@@ -1,6 +1,6 @@
 ## 1.Vue基础概念
 
-### 1. Vue实例
+### 1.Vue实例
 
 ```js
 var vm = new Vue({
@@ -39,9 +39,7 @@ var vm = new Vue({
         <style> </style>
         ```
 
-- 
-
-- `vue-devtols`：浏览器插件，
+- `vue-devtols`：浏览器调试插件；
 
 - `vue-cli`: vue开发标准工具，用于快速构建vue项目；
 
@@ -73,14 +71,6 @@ var vm = new Vue({
 
         ![项目目录说明](./image/vue-cli.png)
 
-### 4.模板语法
-
-- 文本: `{{ msg }}`
-- 原始HTML: `<div v-html="rawHtml"></div>` --> `<div> xxxxxx </div>`
-- 作用于特性: `<div v-bing:id="dynamicId"></div>`
-
-> 以上都支持JavaScript表达式
-
 ## 2.创建实例过程中的选项
 
 ### 1. [选项(数据)](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-%E6%95%B0%E6%8D%AE)
@@ -92,7 +82,6 @@ var vm = new Vue({
 > 组件的定义只接受function
 
 - 以`_, $`开头的属性不会被`Vue` 实例代理, 
-- 以一个组件被定义, `data` 必须声明为返回一个初始数据对象的函数; 因为组件可能被用来创建多个实例。如果 `data` 仍然是一个纯粹的对象，则所有的实例将**共享引用**同一个数据对象;
 
 #### 2.computed
 
@@ -129,11 +118,13 @@ var vm = new Vue({
 
 #### 5.props
 
-- 参考 组建 > props
+- 参考 组件 > props
 
-### 6.propsData
+#### 6.propsData
 
 - 创建实例时传递 props，主要作用是方便测试；
+
+----
 
 ### 2.[选项（DOM）](https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-DOM)
 
@@ -144,9 +135,11 @@ var vm = new Vue({
 
 #### 2.template
 
-- 将会替换挂载的元素;
+- 用于生成渲染函数，替换挂载的元素;
 
 #### 3.render 渲染函数
+
+> 组件的渲染过程：由生命周期图可以看出，当渲染时，首先判断“template”选项是否存在，如果存在将“template”编译为渲染函数，如果不存在，将“#el”内部HTML编译为
 
 - 字符串模板的替代方案, 接收一个`createElement`方法作为第一个参数来创建`VNode`
 
@@ -172,16 +165,44 @@ var vm = new Vue({
 
 ### 4.选项/资源
 
+- `components`: 包含Vue实例可以使用的组件；
+
 ### 5.选项/组合
 
 - `parent`：指定已创建的实例之父实例，在两者之间建立父子关系。子实例可以用 `this.$parent` 访问父实例，子实例被推入父实例的 `$children` 数组中。
+
     - 尽量避免使用，推荐用 props 和 events 实现父子组件通信；
+
+- `extends`：扩展另一个组件
+
+    - ```javascript
+        var CompA = { ... }
+        
+        // 在没有调用 `Vue.extend` 时候继承 CompA
+        var CompB = {
+          extends: CompA,
+          ...
+        }
+        ```
 
 ### 6.选项/其他
 
-- `name`: 组件名称;
-- `functional`: 使组件无状态(无data)无实例(没有this上下文);
-- `model`: 允许自定义组件在使用 `v-model` 时定制 prop 和 event名称；
+- `name`: 组件名称，设定后允许组件模板递归地调用自身。注意，组件在全局用 `Vue.component()` 注册时，全局 ID 自动作为组件的 name，指定 `name` 选项的另一个好处是便于调试。有名字的组件有更友好的警告信息。另外，当在有 [vue-devtools](https://github.com/vuejs/vue-devtools)，未命名组件将显示成 `<AnonymousComponent>`，这很没有语义。通过提供 `name` 选项，可以获得更有语义信息的组件树。
+
+- `functional`：函数式组件，使组件无状态(无`data`)无实例(没有`this`上下文)，他们用一个简单的 `render` 函数返回虚拟节点使他们更容易渲染。
+
+- `model`: 组件上使用`v-model`时，会把 `value` 用作 prop 且把 `input` 用作 event；使用`model`允许自定义组件在使用 `v-model` 时定制 prop 和 event名称；
+
+    - ```javascript
+        {
+            model: {
+                 // prop名为 chhecked
+                 prop: 'checked',
+                 // 事件为 change
+            	 event: 'change'
+            }
+        }
+        ```
 
 -----
 
@@ -196,6 +217,9 @@ var vm = new Vue({
 - `vm.$children`：当前实例的直接子组件；
 - `vm.$parent`：父实例，如果当前实例有的话；
 - `vm.$refs`：一个对象，持有注册过 [`ref` 特性](https://cn.vuejs.org/v2/api/index.html#ref) 的所有 DOM 节点元素或VUE组件实例；
+- `vm.$options`：用于当前vue的初始化选项；
+- `vm.$slots`：用来访问被[插槽分发](https://cn.vuejs.org/v2/guide/components.html#%E4%BD%BF%E7%94%A8%E6%8F%92%E6%A7%BD%E5%88%86%E5%8F%91%E5%86%85%E5%AE%B9)的内容；
+- `vm.$attrs`：包含了父作用域中不作为 `prop` 被识别 (且获取) 的特性绑定 (`class` 和 `style` 除外)。
 
 ### 2.方法
 
@@ -205,7 +229,7 @@ var vm = new Vue({
 - `vm.$emit('eventName', [...args])`：触发当前实例上的指定事件, 并将产生传递个接收器;
 - `vm.$on('eventName', callback)`：监听指定事件；
     - `vm.$once()`：只处理一次；
-
+- `vm.$mount`：如果 Vue 实例在实例化时没有收到 `el` 选项，则它处于*未挂载*状态，没有关联的 DOM 元素。可以使用 `vm.$mount()` 手动地挂载一个未挂载的实例。
 - `vm.$forceUpdate()`：强制vue组件重新渲染；
 - `vm.$nextTick(callback)`：(vue是异步渲染，更新的值只有等到渲染时，才会显示出来）将回调延迟到下次 DOM 更新循环之后执行；
 
@@ -217,30 +241,24 @@ var vm = new Vue({
 
 ### 1.v-bing, 特性绑定, 简写为`:`
 
-> 动态地绑定一个或多个特性，或一个组件 prop 到表达式;
+> 动态地绑定一个或多个属性或一个组件 prop 到某个表达式;
 
 #### 1.绑定`class`
 
 ```html
-<!-- 单个绑定 -->
+<!-- 单个绑定 class的值由 oblClassA 决定 -->
 <div :class="oblClassA"></div>
-<!-- 对象语法: 由 isActive 值决定 active 是否存在 -->
+<!-- 对象语法: 由 isActive 值决定类 active 是否存在 -->
 <div v-bind: class="{active: isActive}"></div>
-<!-- 数组语法 -->
+<!-- 数组语法 单引号中为确定类， 其余为绑定值 -->
 <div :class="[classA, classB, 'class1']"></div>
 ```
-
-
-
-- 对象语法: `<div v-bind: class="{active: isActive}"></div>`, 由`isActive`决定`active`是否存在;
-  - 也可以将整个`{xx}`对象作为一个参数, `<div v-bind: class="classObject"></div>`, 由决定具体类;
-- 数组语法: `<div v-bind:class="[activeClass,  errorClass]"></div>`: 对数组中值进行赋值;
 
 #### 2.绑定其他属性
 
 ```html
 <img :src="imageSrc">
-<!-- 使用js表达式拼接 -->
+<!-- 使用js表达式 -->
 <img :src="'/path/to/images/' + fileName" 
 ```
 
@@ -250,8 +268,6 @@ var vm = new Vue({
 <!-- prop 绑定“prop”必须在 my-component 中声明-->
 <my-component :prop="someThing"></my-component>
 ```
-
-
 
 ### 2.v-if  & v-show 条件渲染
 
@@ -287,7 +303,7 @@ var vm = new Vue({
 - 可以为渲染出的DOM增加唯一标识key: `<div v-for="item in items" :key="item.id">
     - 当在次循环时，如果存在指定key的DOM，Vue就会复用该DOM节点，而不是重新创建，这样，开销较小；（一般都是用值，而不是用index或key）
 
-### 4.v-on 事件处理, 简写为'@'
+### 4.v-on 事件处理, 简写为`@`
 
 > 绑定事件监听器。事件类型由参数指定。表达式可以是一个方法的名字(`@click=functionName`)或一个内联语句(`@click=functionNane(xxx, xx), 或 @click=alert('hello')`)，可以跟修饰符(`例如.stop`);
 >
@@ -322,7 +338,6 @@ var vm = new Vue({
         })
         ```
 
-        
 
 ### 6.v-html
 
@@ -340,7 +355,7 @@ var vm = new Vue({
 
 ## 5.组件
 
-> 组建也是`Vue`的实例, 具有一些特殊点：1.定义时，data 必须为函数, 返回一个数据对象； 2.具有组件名；
+> 组件也是`Vue`的实例, 具有一些特殊点：1.定义时，data 必须为函数, 返回一个数据对象； 2.具有组件名；
 >
 > ？ 为什么data需要一个函数，返回一个数据对象：注册组件的本质其实就是建立一个组件构造器的引用，使用组件才是真正创建一个组件实例。所以，注册组件其实并不产生新的组件类，但会产生一个可以用来实例化的新方式。
 >
@@ -356,14 +371,15 @@ var vm = new Vue({
   - 2.通过实例中的`components` 注册: `new Vue({components:{'ComponentA': ComponentA}})`:
   - 局部注册的组件在其子组件中不可用;
 - 在模块系统中局部注册:
-  -  `import ComponentA form './ComponentA'`;
+  -  导入外部数据对象：`import ComponentA form './ComponentA'`;
+  -  注册：`components：{'ComponentA': ComponentA}`
 - 基础组件的自动化全局注册: 
 
 ### 2.props
 
 > 组件在被外界引用时，外界可以影响或传入组件的数据；该值只能传递给组件，组件不能修改；
 
-- Prop名可以采用PascalCase (首字母大写命名)，在引用组建时，采用kebab-case (短横线分隔命名)；
+- Prop名可以采用PascalCase (首字母大写命名)，在引用组件时，采用kebab-case (短横线分隔命名)；
 
 - 传递Prop时, 都默认为String类型, 如果需要传递数字, 布尔等需要绑定，让vue去解析出需要的值：
 
@@ -414,12 +430,20 @@ var vm = new Vue({
 
 ### 5.插槽
 
-> 用于接收组件标签之间传入的内容
+> 用于接收引用组件标签时在组件标签之间传入的内容；
 
 - 当组件没有定义`<slot>`标签的元素时, 任何传入的内容都会被丢弃;
 - 具名插槽: 当希望定义多个可接收的插槽时, 可以` <slot name="header"></slot>`指定插槽的名字;
   - 当传递内容时, 需要指定`<div slot="slotName"></div>`, 或整体用`<template slot="slotName">`包裹;
-- 组件在定义时, 可以在内部指定内容;
+- 组件在定义时, 可以在内部指定内容作为默认值;
+- 作用域插槽：
+    - 有的时候希望提供的组件带有一个可从子组件获取数据的可复用的插槽:
+    - `<template slot-scope="scopeName"><span>{{scopeName.value}}</span></template>`
+
+### 6.`ref`
+
+- 用来给元素或子组件注册引用信息。引用信息会在父组件的`$refs`对象上；
+- 普通节点上引用指向的就是DOM元素，如果用在子组件上，引用就指向组件实例；
 
 ## 6.全局API
 
@@ -442,6 +466,66 @@ var vm = new Vue({
     // 创建 Profile 实例，并挂载到一个元素上。
     new Profile().$mount('#mount-point')
     ```
+
+
+## 7.VUE渲染过程
+
+- Vue通过建立一个虚拟DOM对真实DOM发生的变化保持追踪。`createElement`返回的就是一个虚拟节点（VNode）；
+
+- `createElement`:
+
+    - ```javascript
+        // @returns {VNode}
+        createElement(
+          // {String | Object | Function}
+          // 一个 HTML 标签字符串，组件选项对象，或者
+          // 解析上述任何一种的一个 async 异步函数。必需参数。
+          'div',
+        
+          // {Object}
+          // 一个包含模板相关属性的数据对象
+          // 你可以在 template 中使用这些特性。可选参数。
+          {
+            
+          },
+        
+          // {String | Array}
+          // 子虚拟节点 (VNodes)，由 `createElement()` 构建而成，
+          // 也可以使用字符串来生成“文本虚拟节点”。可选参数。
+          [
+            '先写一些文字',
+            createElement('h1', '一则头条'),
+            createElement(MyComponent, {
+              props: {
+                someProp: 'foobar'
+              }
+            })
+          ]
+        )
+        
+        ```
+
+
+## 8.其他
+
+### 1.其他特性
+
+- `key`：作为html节点的属性，主要用在 Vue 的虚拟 DOM 算法；
+- `ref`：被用来给元素或子组件注册引用信息。引用信息将会注册在父组件的 `$refs`对象上；
+
+### 2.内置组件
+
+- `keep-alive`: 主要用于保留组件状态或避免重新渲染。
+
+- `component`：渲染一个“元组件”为动态组件。依 `is` 的值，来决定哪个组件被渲染。
+
+    - ```html
+        <!-- 根据componentId 的值确定是哪个组件被渲染 -->
+        <component :is="componentId"></component>
+        
+        <!-- 也能够渲染注册过的组件或 prop 传入的组件 -->
+        <component :is="$options.components.child"></component>
+        ```
 
 - 
 
