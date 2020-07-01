@@ -605,12 +605,6 @@ js为单线程语言，允许设置超时或间歇调用，使代码在特定时
   - `console.time(); console.timeEnd()`：显示代码运行时间；
   - `console.table()`：表格化显示；
 
-
-
-
-
-
-
 ## 8.AJAX和序列化
 
 ### 1.AJAX
